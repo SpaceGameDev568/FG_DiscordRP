@@ -1,0 +1,74 @@
+/MANIFEST:EMBED
+/MANIFESTINPUT:"D:\Unreal Game Engine\Editor\Unreal Engine - CSS\Engine\Build\Windows\Resources\Default-Win64.manifest"
+/NOLOGO
+/DEBUG
+/errorReport:prompt
+/MACHINE:x64
+/SUBSYSTEM:WINDOWS
+/FIXED:No
+/NXCOMPAT
+/STACK:12000000
+/DELAY:UNLOAD
+/DLL
+/PDBALTPATH:%_PDB%
+/OPT:NOREF
+/OPT:NOICF
+/INCREMENTAL:NO
+/ignore:4199
+/ignore:4099
+/DELAYLOAD:"discord_game_sdk.dll"
+/DELAYLOAD:"d3d12.dll"
+/DELAYLOAD:"DBGHELP.DLL"
+/LIBPATH:"D:\Visual Studio 2022\VC\Tools\MSVC\14.35.32215\lib\x64"
+/LIBPATH:"C:\Program Files (x86)\Windows Kits\NETFXSDK\4.8\lib\um\x64"
+/LIBPATH:"C:\Program Files (x86)\Windows Kits\10\lib\10.0.22621.0\ucrt\x64"
+/LIBPATH:"C:\Program Files (x86)\Windows Kits\10\lib\10.0.22621.0\um\x64"
+/NODEFAULTLIB:"LIBCMT"
+/NODEFAULTLIB:"LIBCPMT"
+/NODEFAULTLIB:"LIBCMTD"
+/NODEFAULTLIB:"LIBCPMTD"
+/NODEFAULTLIB:"MSVCRTD"
+/NODEFAULTLIB:"MSVCPRTD"
+/NODEFAULTLIB:"LIBC"
+/NODEFAULTLIB:"LIBCP"
+/NODEFAULTLIB:"LIBCD"
+/NODEFAULTLIB:"LIBCPD"
+/FUNCTIONPADMIN
+"D:\Modding\Satisfactory\SatisfactoryModLoader\Intermediate\Build\Win64\FactoryGameEditor\Development\Engine\SharedPCH.Engine.ShadowErrors.h.obj"
+"D:\Modding\Satisfactory\SatisfactoryModLoader\Plugins\FG_DiscordRP\Intermediate\Build\Win64\UE4Editor\Development\DiscordUE4\Module.DiscordUE4.cpp.obj"
+"D:\Modding\Satisfactory\SatisfactoryModLoader\Plugins\FG_DiscordRP\Intermediate\Build\Win64\UE4Editor\Development\DiscordUE4\Module.DiscordUE4.gen.cpp.obj"
+"D:\Modding\Satisfactory\SatisfactoryModLoader\Plugins\FG_DiscordRP\Intermediate\Build\Win64\UE4Editor\Development\DiscordUE4\Default.rc2.res"
+"D:\Modding\Satisfactory\SatisfactoryModLoader\Plugins\FG_DiscordRP\Source\ThirdParty\discord-files\Win64\discord_game_sdk.dll.lib"
+"D:\Unreal Game Engine\Editor\Unreal Engine - CSS\Engine\Intermediate\Build\Win64\UE4Editor\Development\CoreUObject\UE4Editor-CoreUObject.lib"
+"D:\Unreal Game Engine\Editor\Unreal Engine - CSS\Engine\Intermediate\Build\Win64\UE4Editor\Development\Engine\UE4Editor-Engine.lib"
+"D:\Unreal Game Engine\Editor\Unreal Engine - CSS\Engine\Intermediate\Build\Win64\UE4Editor\Development\Core\UE4Editor-Core.lib"
+"D:\Unreal Game Engine\Editor\Unreal Engine - CSS\Engine\Intermediate\Build\Win64\UE4Editor\Development\Projects\UE4Editor-Projects.lib"
+"delayimp.lib"
+"wininet.lib"
+"rpcrt4.lib"
+"ws2_32.lib"
+"dbghelp.lib"
+"comctl32.lib"
+"Winmm.lib"
+"kernel32.lib"
+"user32.lib"
+"gdi32.lib"
+"winspool.lib"
+"comdlg32.lib"
+"advapi32.lib"
+"shell32.lib"
+"ole32.lib"
+"oleaut32.lib"
+"uuid.lib"
+"odbc32.lib"
+"odbccp32.lib"
+"netapi32.lib"
+"iphlpapi.lib"
+"setupapi.lib"
+"dwmapi.lib"
+"imm32.lib"
+/OUT:"D:\Modding\Satisfactory\SatisfactoryModLoader\Plugins\FG_DiscordRP\Binaries\Win64\UE4Editor-DiscordUE4.dll"
+/IMPLIB:"D:\Modding\Satisfactory\SatisfactoryModLoader\Plugins\FG_DiscordRP\Intermediate\Build\Win64\UE4Editor\Development\DiscordUE4\UE4Editor-DiscordUE4.suppressed.lib"
+/PDB:"D:\Modding\Satisfactory\SatisfactoryModLoader\Plugins\FG_DiscordRP\Binaries\Win64\UE4Editor-DiscordUE4.pdb"
+/ignore:4078
+/INCLUDE:IMPLEMENT_MODULE_DiscordUE4

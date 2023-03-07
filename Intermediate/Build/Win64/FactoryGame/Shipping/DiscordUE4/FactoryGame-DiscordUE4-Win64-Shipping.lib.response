@@ -1,0 +1,15 @@
+/NOLOGO
+/errorReport:prompt
+/MACHINE:x64
+/SUBSYSTEM:WINDOWS
+/LTCG
+/DEF
+/NAME:"FactoryGame-DiscordUE4-Win64-Shipping.dll"
+/IGNORE:4221
+/NODEFAULTLIB
+"D:\Modding\Satisfactory\SatisfactoryModLoader\Intermediate\Build\Win64\FactoryGame\Shipping\Engine\SharedPCH.Engine.ShadowErrors.h.obj"
+"D:\Modding\Satisfactory\SatisfactoryModLoader\Plugins\FG_DiscordRP\Intermediate\Build\Win64\FactoryGame\Shipping\DiscordUE4\Module.DiscordUE4.cpp.obj"
+"D:\Modding\Satisfactory\SatisfactoryModLoader\Plugins\FG_DiscordRP\Intermediate\Build\Win64\FactoryGame\Shipping\DiscordUE4\Module.DiscordUE4.gen.cpp.obj"
+"D:\Modding\Satisfactory\SatisfactoryModLoader\Plugins\FG_DiscordRP\Intermediate\Build\Win64\FactoryGame\Shipping\DiscordUE4\Default.rc2.res"
+/OUT:"D:\Modding\Satisfactory\SatisfactoryModLoader\Plugins\FG_DiscordRP\Intermediate\Build\Win64\FactoryGame\Shipping\DiscordUE4\FactoryGame-DiscordUE4-Win64-Shipping.lib"
+/INCLUDE:IMPLEMENT_MODULE_DiscordUE4
