@@ -1,0 +1,13 @@
+D:\Modding\Satisfactory\SatisfactoryModLoader\Plugins\FG_DiscordRP\Intermediate\Build\Win64\UE4Editor\Development\DiscordUE4\Definitions.DiscordUE4.h
+D:/Modding/Satisfactory/SatisfactoryModLoader/Plugins/FG_DiscordRP/Intermediate/Build/Win64/UE4Editor/Inc/DiscordUE4/DiscordObject.gen.cpp
+D:\Unreal Game Engine\Editor\Unreal Engine - CSS\Engine\Source\Runtime\CoreUObject\Public\UObject/GeneratedCppIncludes.h
+D:\Unreal Game Engine\Editor\Unreal Engine - CSS\Engine\Source\Runtime\CoreUObject\Public\UObject/MetaData.h
+D:\Modding\Satisfactory\SatisfactoryModLoader\Plugins\FG_DiscordRP\Source\DiscordUE4/Public/DiscordObject.h
+D:\Unreal Game Engine\Editor\Unreal Engine - CSS\Engine\Source\Runtime\CoreUObject\Public\UObject/NoExportTypes.h
+D:\Unreal Game Engine\Editor\Unreal Engine - CSS\Engine\Source\Runtime\CoreUObject\Public\UObject/PropertyAccessUtil.h
+D:\Unreal Game Engine\Editor\Unreal Engine - CSS\Engine\Source\Runtime\Core\Public\Math/UnitConversion.h
+D:\Unreal Game Engine\Editor\Unreal Engine - CSS\Engine\Source\Runtime\Core\Public\Math/UnitConversion.inl
+D:\Unreal Game Engine\Editor\Unreal Engine - CSS\Engine\Source\Runtime\Core\Public\Internationalization/PolyglotTextData.h
+D:\Unreal Game Engine\Editor\Unreal Engine - CSS\Engine\Source\Runtime\CoreUObject\Public\AssetRegistry/ARFilter.h
+D:\Modding\Satisfactory\SatisfactoryModLoader\Plugins\FG_DiscordRP\Intermediate\Build\Win64\UE4Editor\Inc\DiscordUE4\DiscordObject.generated.h
+D:/Modding/Satisfactory/SatisfactoryModLoader/Plugins/FG_DiscordRP/Intermediate/Build/Win64/UE4Editor/Inc/DiscordUE4/DiscordUE4.init.gen.cpp
