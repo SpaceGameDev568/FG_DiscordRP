@@ -3,12 +3,6 @@ This mod will show your in-game status on your Discord profile. It currently has
 
 <a href="https://assets.spacegamedev.com/images/satisfactory-modding/Discord_HhBsASpzIo.png"><img class="visualizer" src="https://assets.spacegamedev.com/images/satisfactory-modding/Discord_HhBsASpzIo.png" alt="Visualizer"/></a>
 
-<style>
-.visualizer{
-border-radius: 10px;
-}
-</style>
-
 If you encounter any bugs with this mod please contact me either on Discord (SpaceGameDev568 #0596) or via email at support@spacegamedev.com.
 
 Attribution:
