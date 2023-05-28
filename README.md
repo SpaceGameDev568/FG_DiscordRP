@@ -1,7 +1,7 @@
 # Satisfactory Discord Rich Presence
 This mod will show your in-game status on your Discord profile. It currently has support for biome, tier, activity, and elapsed time in the active game session.
 
-<a href="https://assets.spacegamedev.com/images/satisfactory-modding/Discord_HhBsASpzIo.png"><img class="visualizer" src="https://assets.spacegamedev.com/images/satisfactory-modding/Discord_HhBsASpzIo.png" alt="Visualizer"/></a>
+<a href="https://assets.spacegamedev.com/images\webp\satisfactory-modding\RichPresence.webp"><img class="visualizer" src="https://assets.spacegamedev.com/images\webp\satisfactory-modding\RichPresence.webp" alt="Visualizer"/></a>
 
 If you encounter any bugs with this mod please contact me either on Discord (SpaceGameDev568 #0596) or via email at support@spacegamedev.com.
 
