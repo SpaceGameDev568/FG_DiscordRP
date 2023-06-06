@@ -159,8 +159,8 @@ public:
 	* @See OnStateSet delegate.
 	* @param InNewState [FString] State to set.
 	**/
-	UFUNCTION(BlueprintCallable, Category = "Discord")
-	void SetState(FString InNewState);
+	UFUNCTION(Category = "Discord")
+	static void SetState(FString InNewState);
 
 	/**
 	* public UDiscordObject::SetDetails

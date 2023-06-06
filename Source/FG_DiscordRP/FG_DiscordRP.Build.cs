@@ -56,6 +56,7 @@ public class FG_DiscordRP : ModuleRules
 				"Engine",
 				"Slate",
 				"SlateCore",
+				"DiscordUE4",
 				// ... add private dependencies that you statically link with here ...	
 			}
 		);

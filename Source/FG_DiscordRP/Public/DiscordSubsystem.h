@@ -2,19 +2,25 @@
 
 #include "CoreMinimal.h"
 #include "Subsystem/ModSubsystem.h"
-#include "DiscordUE4/Public/DiscordObject.h"
+#include "DiscordObject.h"
 #include "DiscordSubsystem.generated.h"
 
-/**
- * 
- */
 UCLASS()
 class FG_DISCORDRP_API ADiscordSubsystem : public AModSubsystem
 {
 	GENERATED_BODY()
+	
+public:
+	
+ADiscordSubsystem();
 
+protected:
+	
 	virtual void BeginPlay() override;
-	virtual void Tick();
+	
+public:
+	
+	virtual void Tick(float DeltaTime) override;
 
 	float UpdateInterval = 5.0f;
 	bool SubsystemDisabled = false;
@@ -26,6 +32,5 @@ class FG_DISCORDRP_API ADiscordSubsystem : public AModSubsystem
 	FString StateString = "Session Loading...";
 	FString GameLanguage = "en-US-POSIX";
 	FString DiscordClientID = "1082738646173614143";
-
 	bool IsDiscordObjValid;
 };
