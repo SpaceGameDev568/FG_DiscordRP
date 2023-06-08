@@ -2,7 +2,7 @@
 
 
 #include "DiscordObject.h"
-#include "../DiscordSDK/discord.h"
+#include "../discord-files/discord.h"
 #include "UObject/Class.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogDiscord, Log, All)
