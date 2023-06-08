@@ -40,14 +40,14 @@ public class DiscordUE4 : ModuleRules
 
 	private string DiscordPath
 	{
-		get { return Path.GetFullPath(Path.Combine(ModuleDirectory, "discord-files")); }
+		get { return Path.GetFullPath(Path.Combine(ModuleDirectory, "DiscordSDK")); }
 	}
 
 	private string DiscordLibFile
 	{
 		get
 		{
-			return Path.GetFullPath(Path.Combine(ModuleDirectory, "../ThirdParty/discord-files/", GetPlatformName, DiscordLibFileName));
+			return Path.GetFullPath(Path.Combine(ModuleDirectory, "../ThirdParty/DiscordSDK/", GetPlatformName, DiscordLibFileName));
 		}
 	}
 
@@ -79,7 +79,7 @@ public class DiscordUE4 : ModuleRules
 			// Only Windows needs separate library and runtime dependency files
 			if (IsWin64())
 			{
-				return Path.GetFullPath(Path.Combine(ModuleDirectory, "../ThirdParty/discord-files/Win64/discord_game_sdk.dll"));
+				return Path.GetFullPath(Path.Combine(ModuleDirectory, "../ThirdParty/DiscordSDK/Win64/discord_game_sdk.dll"));
 			}
 			else
 			{

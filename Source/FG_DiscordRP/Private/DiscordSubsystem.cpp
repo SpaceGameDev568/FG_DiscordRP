@@ -4,6 +4,7 @@
 #include "FG_DiscordRP.h"
 #include "Subsystem/ModSubsystem.h"
 #include "DiscordObject.h"
+#include "Online.h"
 #include "Internationalization/Internationalization.h"
 #include "UObject/Object.h"
 
@@ -16,6 +17,16 @@ ADiscordSubsystem::ADiscordSubsystem()
 void ADiscordSubsystem::BeginPlay()
 {
 	Super::BeginPlay();
+
+	float UpdateInterval = 5.0f;
+	bool SubsystemDisabled = false;
+	static int32 NumPlayersInSession = 0;
+	int BiomeCounter = 0;
+	FString TierString = "Session Loading...";
+	FString DetailsString = "Session Loading...";
+	FString StateString = "Session Loading...";
+	FString GameLanguage = "en-US-POSIX";
+	FString DiscordClientID = "1082738646173614143";
 
 	SetActorTickEnabled(true);
 
@@ -55,11 +66,29 @@ void ADiscordSubsystem::Tick(float DeltaTime)
 	}
 	else
 	{
-		UE_LOG(LogFG_DiscordRP, Verbose, TEXT("Subsystem disabled. Shutting Down..."));
+		UE_LOG(LogFG_DiscordRP, Verbose, TEXT("Subsystem enabled. Continuing"));
 
 		FTimerHandle TimerHandle;
-		GetWorld()->GetTimerManager().SetTimer(TimerHandle, UpdateInterval, false);
+		GetWorld()->GetTimerManager().SetTimer(TimerHandle, 5, false);
 
-		UDiscordObject::SetState("Test");
+		WorldRef = GetWorld();
+
+		NumPlayersInSession = GEngine->GetNumGamePlayers(WorldRef);
+
+		Online::GetPresenceInterface();
 	}
+}
+
+void ADiscordSubsystem::DynamicDiscordUpdate()
+{
+	UDiscordObject::SetState("Test");
+
+	UDiscordObject::SetDetails(*DetailsString);
+
+	UDiscordObject::SetLargeImage("satisfactory_logo");
+
+	UDiscordObject::SetPartySize(*NumPlayersInSession);
+
+	//Can be moved out of ticking section later, only needs to be called once
+	UDiscordObject::SetPartyMax(4);
 }

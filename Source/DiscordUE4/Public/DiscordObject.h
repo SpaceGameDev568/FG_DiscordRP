@@ -159,7 +159,7 @@ public:
 	* @See OnStateSet delegate.
 	* @param InNewState [FString] State to set.
 	**/
-	UFUNCTION(Category = "Discord")
+	UFUNCTION(BlueprintCallable, Category = "Discord")
 	static void SetState(FString InNewState);
 
 	/**
@@ -169,31 +169,31 @@ public:
 	* @param InNewDetails [FString] Details to set.
 	**/
 	UFUNCTION(BlueprintCallable, Category = "Discord")
-	void SetDetails(FString InNewDetails);
+	static void SetDetails(FString InNewDetails);
 
 	UFUNCTION(BlueprintCallable, Category = "Discord")
-	void SetLargeImage(const FString InKeyName);
+	static void SetLargeImage(const FString InKeyName);
 	
 	UFUNCTION(BlueprintCallable, Category = "Discord")
-	void SetSmallImage(const FString InKeyName);
+	static void SetSmallImage(const FString InKeyName);
 
 	UFUNCTION(BlueprintCallable, Category = "Discord")
-	void SetLargeImageText(const FString InKeyName);
+	static void SetLargeImageText(const FString InKeyName);
 	
 	UFUNCTION(BlueprintCallable, Category = "Discord")
-	void SetSmallImageText(const FString InKeyName);
+	static void SetSmallImageText(const FString InKeyName);
 
 	UFUNCTION(BlueprintCallable, Category = "Discord")
-	void SetPartyId(const FString InNewPartyId);
+	static void SetPartyId(const FString InNewPartyId);
 
 	UFUNCTION(BlueprintCallable, Category = "Discord")
-	void SetPartySize(const int32 InNewPartySize);
+	static void SetPartySize(const int32 InNewPartySize);
 
 	UFUNCTION(BlueprintCallable, Category = "Discord")
-	void SetPartyMax(const int32 InNewPartyMax);
+	static void SetPartyMax(const int32 InNewPartyMax);
 
 	UFUNCTION(BlueprintCallable, Category = "Discord")
-	void SetJoinSecret(const FString InNewJoinSecret);
+	static void SetJoinSecret(const FString InNewJoinSecret);
 
 	/**
 	* public UDiscordObject::StartDiscordTimer
