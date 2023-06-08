@@ -1,15 +1,12 @@
 # Remove Discord Game SDK for copyright reasons
-/Source/ThirdParty/discord-files/*
-/Source/DiscordUE4/discord-files/*
+/Source/ThirdParty/DiscordSDK/*
+/Source/DiscordUE4/DiscordSDK/*
 
 # Ignore saved build artifacts
 /Saved/*
 
 # Ignore Crypto.json because the mod doesn't use pak file encryption
 /Modding/*
-
-# Exclude DiscordUE4 Source
-/Source/DiscordUE4/*
 
 # Exclude Binaries
 /Intermediate/*
