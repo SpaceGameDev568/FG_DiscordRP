@@ -8,6 +8,9 @@
 # Ignore Crypto.json because the mod doesn't use pak file encryption
 /Modding/*
 
+# Exclude DiscordUE4 Source
+/Source/DiscordUE4/*
+
 # Exclude Binaries
 /Intermediate/*
 /Binaries/*
