@@ -2,23 +2,16 @@
 
 #include "DiscordSubsystem.h"
 #include "FG_DiscordRP.h"
+#include "Actor.h"
 #include "Subsystem/ModSubsystem.h"
-#include "DiscordObject.h"
+#include "DiscordUE4/Public/DiscordObject.h"
 #include "Internationalization/Internationalization.h"
 #include "UObject/Object.h"
-
-ADiscordSubsystem::ADiscordSubsystem()
-{
-	PrimaryActorTick.bCanEverTick = true;
-	PrimaryActorTick.TickGroup = TG_PrePhysics;
-}
 
 void ADiscordSubsystem::BeginPlay()
 {
 	Super::BeginPlay();
-
-	SetActorTickEnabled(true);
-
+	
 	UE_LOG(LogFG_DiscordRP, Verbose, TEXT("Loaded FG_DRP Reporter Subsystem."));
 
 	GameLanguage = FInternationalization::Get().GetCurrentLanguage()->GetName();
@@ -36,30 +29,17 @@ void ADiscordSubsystem::BeginPlay()
 	else // If the Discord Object is valid, continue running the code
 	{
 		UE_LOG(LogFG_DiscordRP, Verbose, TEXT("Discord Object is valid."));
+
+		// To-do: Log DiscordObject display name
 	}
 }
 
-void ADiscordSubsystem::Tick(float DeltaTime)
+void ADiscordSubsystem::Tick()
 {
-	Super::Tick(DeltaTime);
-	
-	UE_LOG(LogFG_DiscordRP, Verbose, TEXT("Subsystem is ticking."));
+	Super::Tick(0);
 
 	if (SubsystemDisabled)
 	{
-		UE_LOG(LogFG_DiscordRP, Verbose, TEXT("Subsystem disabled. Shutting Down..."));
-
-		SetActorTickEnabled(false);
-
-		UDiscordObject::DestroyDiscordObject();
-	}
-	else
-	{
-		UE_LOG(LogFG_DiscordRP, Verbose, TEXT("Subsystem disabled. Shutting Down..."));
-
-		FTimerHandle TimerHandle;
-		GetWorld()->GetTimerManager().SetTimer(TimerHandle, UpdateInterval, false);
-
-		UDiscordObject::SetState("Test");
+		UE_LOG(LogFG_DiscordRP, Verbose, TEXT("Subsystem disabled. Shitting Down..."));
 	}
 }
