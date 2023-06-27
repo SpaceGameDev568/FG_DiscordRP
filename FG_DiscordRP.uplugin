@@ -17,16 +17,6 @@
 	"Installed": false,
 	"Modules": [
 		{
-			"Name": "DiscordUE4",
-			"Type": "Runtime",
-			"LoadingPhase": "PreDefault",
-			"WhitelistPlatforms": [
-				"Win64",
-				"Mac",
-				"Linux"
-			]
-		},
-		{
 			"Name": "FG_DiscordRP",
 			"Type": "Runtime",
 			"LoadingPhase": "PreDefault",

@@ -3,9 +3,9 @@
 #include "DiscordSubsystem.h"
 #include "FG_DiscordRP.h"
 #include "Subsystem/ModSubsystem.h"
-#include "DiscordObject.h"
+#include "DiscordRPCServer.h"
 #include "Online.h"
-#include "Internationalization/Internationalization.h"
+//#include "Internationalization/Internationalization.h"
 #include "UObject/Object.h"
 
 ADiscordSubsystem::ADiscordSubsystem()
@@ -20,25 +20,25 @@ void ADiscordSubsystem::BeginPlay()
 
 	float UpdateInterval = 5.0f;
 	bool SubsystemDisabled = false;
-	static int32 NumPlayersInSession = 0;
-	int BiomeCounter = 0;
-	FString TierString = "Session Loading...";
-	FString DetailsString = "Session Loading...";
-	FString StateString = "Session Loading...";
-	FString GameLanguage = "en-US-POSIX";
+	//static int32 NumPlayersInSession = 0;
+	//int BiomeCounter = 0;
+	//FString TierString = "Session Loading...";
+	//FString DetailsString = "Session Loading...";
+	//FString StateString = "Session Loading...";
+	//FString GameLanguage = "en-US-POSIX";
 	FString DiscordClientID = "1082738646173614143";
 
 	SetActorTickEnabled(true);
 
 	UE_LOG(LogFG_DiscordRP, Verbose, TEXT("Loaded FG_DRP Reporter Subsystem."));
 
-	GameLanguage = FInternationalization::Get().GetCurrentLanguage()->GetName();
+	//GameLanguage = FInternationalization::Get().GetCurrentLanguage()->GetName();
 
-	UDiscordObject::CreateDiscordObject("1082738646173614143", false, true);
+	UDiscordRPCServer::CreateDiscordRPCServer("1082738646173614143", false, true);
 
-	DiscordObjectRef = UDiscordObject::GetDiscordObject();
+	DiscordRPCRef = UDiscordRPCServer::GetDiscordRPCServer();
 
-	IsDiscordObjValid = IsValid(DiscordObjectRef);
+	IsDiscordObjValid = IsValid(DiscordRPCRef);
 
 	if (!IsDiscordObjValid) // Check if the newly created Discord Object is valid before continuing
 	{
@@ -62,7 +62,7 @@ void ADiscordSubsystem::Tick(float DeltaTime)
 
 		SetActorTickEnabled(false);
 
-		UDiscordObject::DestroyDiscordObject();
+		UDiscordRPCServer::DestroyDiscordRPCServer();
 	}
 	else
 	{
@@ -71,9 +71,9 @@ void ADiscordSubsystem::Tick(float DeltaTime)
 		FTimerHandle TimerHandle;
 		GetWorld()->GetTimerManager().SetTimer(TimerHandle, 5, false);
 
-		WorldRef = GetWorld();
-
-		NumPlayersInSession = GEngine->GetNumGamePlayers(WorldRef);
+		//WorldRef = GetWorld();
+		//
+		//NumPlayersInSession = GEngine->GetNumGamePlayers(WorldRef);
 
 		Online::GetPresenceInterface();
 	}
@@ -81,14 +81,14 @@ void ADiscordSubsystem::Tick(float DeltaTime)
 
 void ADiscordSubsystem::DynamicDiscordUpdate()
 {
-	UDiscordObject::SetState("Test");
+	UDiscordRPCServer::SetState("Test");
 
-	UDiscordObject::SetDetails(*DetailsString);
+	//UDiscordRPCServer::SetDetails(*DetailsString);
 
-	UDiscordObject::SetLargeImage("satisfactory_logo");
+	UDiscordRPCServer::SetLargeImage("satisfactory_logo");
 
-	UDiscordObject::SetPartySize(*NumPlayersInSession);
+	//UDiscordRPCServer::SetPartySize(*NumPlayersInSession);
 
 	//Can be moved out of ticking section later, only needs to be called once
-	UDiscordObject::SetPartyMax(4);
+	UDiscordRPCServer::SetPartyMax(4);
 }

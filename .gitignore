@@ -1,6 +1,7 @@
 # Remove Discord Game SDK for copyright reasons
 /Source/ThirdParty/DiscordSDK/*
 /Source/DiscordUE4/DiscordSDK/*
+/Source/FG_DiscordRP/DiscordSDK/*
 
 # Ignore saved build artifacts
 /Saved/*

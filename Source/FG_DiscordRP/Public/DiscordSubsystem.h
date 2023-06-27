@@ -2,7 +2,8 @@
 
 #include "CoreMinimal.h"
 #include "Subsystem/ModSubsystem.h"
-#include "DiscordObject.h"
+#include "DiscordRPCServer.h"
+#include "FG_DiscordRP.h"
 #include "DiscordSubsystem.generated.h"
 
 UCLASS()
@@ -12,16 +13,16 @@ class FG_DISCORDRP_API ADiscordSubsystem : public AModSubsystem
 
 private:
 
-	static UWorld* WorldRef;
+//	static UWorld* WorldRef;
 	float UpdateInterval;
 	bool SubsystemDisabled;
-	static int32 NumPlayersInSession;
-	int BiomeCounter;
-	static UDiscordObject* DiscordObjectRef;
-	FString TierString;
-	FString DetailsString;
-	FString StateString;
-	FString GameLanguage;
+//	static int32 NumPlayersInSession;
+//	int BiomeCounter;
+	static UDiscordRPCServer* DiscordRPCRef;
+//	FString TierString;
+//	FString DetailsString;
+//	FString StateString;
+//	FString GameLanguage;
 	FString DiscordClientID;
 	bool IsDiscordObjValid;
 	

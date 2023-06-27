@@ -1,6 +1,5 @@
 // Created by Satheesh (ryanjon2040). Twitter: https://twitter.com/ryanjon2040. Discord: @ryanjon2040#5319
 
-
 #include "DiscordObject.h"
 #include "../DiscordSDK/discord.h"
 #include "UObject/Class.h"
