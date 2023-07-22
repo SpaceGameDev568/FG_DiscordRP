@@ -1,5 +1,3 @@
-SpaceGameDev License
-
 Copyright © 2023 Jesse Hodgson. All Rights Reserved.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
