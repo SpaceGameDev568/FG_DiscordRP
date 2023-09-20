@@ -1,8 +1,8 @@
 {
 	"FileVersion": 3,
 	"Version": 1,
-	"VersionName": "1.2.0",
-	"SemVersion": "1.2.0",
+	"VersionName": "1.2.1",
+	"SemVersion": "1.2.1",
 	"FriendlyName": "Discord Rich Presence",
 	"Description": "A Discord Rich Presence mod for Satisfactory.",
 	"Category": "Modding",
@@ -20,7 +20,7 @@
 			"Name": "DiscordUE4",
 			"Type": "Runtime",
 			"LoadingPhase": "PreDefault",
-			"WhitelistPlatforms": [
+			"PlatformAllowList": [
 				"Win64",
 				"Mac",
 				"Linux"
@@ -30,7 +30,7 @@
 	"Plugins": [
 		{
 			"Name": "SML",
-			"SemVersion": "^3.5.0",
+			"SemVersion": "^3.5.1",
 			"Enabled": true
 		}
 	]
