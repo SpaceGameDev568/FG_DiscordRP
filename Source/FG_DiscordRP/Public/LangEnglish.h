@@ -3,7 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "DiscordUE4/Public/DiscordObject.h"
+#include "DiscordObject.h"
+
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "LangEnglish.generated.h"
 
