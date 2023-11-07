@@ -25,7 +25,7 @@ public class FG_DiscordRP : ModuleRules
 		PublicDependencyModuleNames.AddRange(
 			new string[]
 			{
-				"Core", "DiscordUE4",
+				"Core", "DiscordUE4", "FactoryGame", "SML"
 				// ... add other public dependencies that you statically link with here ...
 			}
 			);

@@ -2,7 +2,7 @@
 
 #include "LangEnglish.h"
 #include "FG_DiscordRP.h"
-#include "DiscordUE4/Public/DiscordObject.h"
+#include "DiscordObject.h"
 
 void ULangEnglish::InterpretEnglish(FString InStateString, FString InTierString, FString InPresenceString, UDiscordObject* DiscordObject)
 {
@@ -10,6 +10,8 @@ void ULangEnglish::InterpretEnglish(FString InStateString, FString InTierString,
 	// Add small image will tier info
 	DiscordObject->SetSmallImage("satisfactory_logo");
 	DiscordObject->SetSmallImageText(InTierString);
+
+	UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("%s"),*InTierString);
 
 	// Parse Biome String
 
