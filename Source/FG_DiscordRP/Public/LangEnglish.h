@@ -15,6 +15,8 @@ class FG_DISCORDRP_API ULangEnglish : public UBlueprintFunctionLibrary
 {
 	GENERATED_BODY()
 
+	friend class AReporterSubsystem;
+
 	UFUNCTION(BlueprintCallable, Category = "Discord")
 	static void InterpretEnglish(FString InStateString, FString InTierString, FString InPresenceString, UDiscordObject* DiscordObject);
 };

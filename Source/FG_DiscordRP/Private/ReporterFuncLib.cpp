@@ -34,8 +34,3 @@ void UReporterFuncLib::InitializeReporter(FString &DiscordClientID, FString &Gam
 		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Discord Object not valid, exiting..."));
 	}
 }
-
-// void UReporterFuncLib::GetPlayerPresenceString(FString InPresence, FString &PresenceString)
-// {
-// 	UFGPresenceLibrary::GetPresenceString(InPresence);
-// }
