@@ -1,16 +1,16 @@
 {
 	"FileVersion": 3,
 	"Version": 1,
-	"VersionName": "1.1.10",
-	"SemVersion": "1.1.10",
+	"VersionName": "1.2.1",
+	"SemVersion": "1.2.1",
 	"FriendlyName": "Discord Rich Presence",
 	"Description": "A Discord Rich Presence mod for Satisfactory.",
 	"Category": "Modding",
-	"CreatedBy": "SpaceGameDev568",
+	"CreatedBy": "SpaceGameDev",
 	"CreatedByURL": "https://github.com/SpaceGameDev568",
 	"DocsURL": "https://ficsit.app/mod/FG_DiscordRP",
 	"MarketplaceURL": "https://ficsit.app/mod/FG_DiscordRP",
-	"SupportURL": "mailto:support@spacegamedev.com",
+	"SupportURL": "https://spacegamedev.freshdesk.com",
 	"CanContainContent": true,
 	"IsBetaVersion": false,
 	"IsExperimentalVersion": false,
@@ -20,7 +20,17 @@
 			"Name": "DiscordUE4",
 			"Type": "Runtime",
 			"LoadingPhase": "PreDefault",
-			"WhitelistPlatforms": [
+			"PlatformAllowList": [
+				"Win64",
+				"Mac",
+				"Linux"
+			]
+		},
+		{
+			"Name": "FG_DiscordRP",
+			"Type": "Runtime",
+			"LoadingPhase": "PreDefault",
+			"PlatformAllowList": [
 				"Win64",
 				"Mac",
 				"Linux"
@@ -30,8 +40,11 @@
 	"Plugins": [
 		{
 			"Name": "SML",
-			"SemVersion": "^3.4.1",
-			"Enabled": true
+			"SemVersion": "^3.6.0",
+			"Enabled": true,
+			"BasePlugin": false
 		}
-	]
+	],
+	"RemoteVersionRange": "",
+	"AcceptsAnyRemoteVersion": false
 }

@@ -9,6 +9,12 @@ public class DiscordUE4 : ModuleRules
 	{
 		PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
 
+		PublicIncludePaths.AddRange(
+			new string[] {
+			// ... add public include paths required here ...
+			}
+			);
+
 		if (Directory.Exists(DiscordPath) == false)
 		{
 			throw new BuildException("discord files not found. Check it exists here: " + DiscordPath);

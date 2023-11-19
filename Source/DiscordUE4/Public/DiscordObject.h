@@ -2,9 +2,7 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
 #include "Tickable.h"
-#include "UObject/NoExportTypes.h"
 #include "DiscordObject.generated.h"
 
 UENUM(BlueprintType)
@@ -63,9 +61,7 @@ class DISCORDUE4_API UDiscordObject : public UObject, public FTickableGameObject
 {
 	GENERATED_BODY()
 
-private:
-
-	static UDiscordObject* DiscordObjectInstance;
+	static TStrongObjectPtr<UDiscordObject> DiscordObjectInstance;
 
 	uint8 bCanTick : 1;
 	uint8 bTimerStarted : 1;
@@ -111,14 +107,6 @@ public:
 	FOnDiscordResult OnTimerEnd;
 
 	/**
-	* public static UDiscordObject::GetOrCreateDiscordObject
-	* DEPRECATED FUNCTION.
-	**/
-	UE_DEPRECATED(4.24, "Please use CreateDiscordObject and GetDiscordObject.")
-	UFUNCTION(BlueprintCallable, Category = "Discord", meta = (DeprecatedFunction, DeprecationMessage = "Please use Create Discord Object and Get Discord Object methods."))
-	static UDiscordObject* GetOrCreateDiscordObject(FString InClientID, const bool bRequireDiscordRunning = false, const bool bStartElapsedTimer = true);
-
-	/**
 	* public static UDiscordObject::CreateDiscordObject
 	* Creates the static Discord Object Instance.
 	* @See Make sure you setup your app as per this documentation https://discord.com/developers/docs/game-sdk/sdk-starter-guide
@@ -160,7 +148,7 @@ public:
 	* @param InNewState [FString] State to set.
 	**/
 	UFUNCTION(BlueprintCallable, Category = "Discord")
-	static void SetState(FString InNewState);
+	void SetState(FString InNewState);
 
 	/**
 	* public UDiscordObject::SetDetails
@@ -169,31 +157,31 @@ public:
 	* @param InNewDetails [FString] Details to set.
 	**/
 	UFUNCTION(BlueprintCallable, Category = "Discord")
-	static void SetDetails(FString InNewDetails);
+	void SetDetails(FString InNewDetails);
 
 	UFUNCTION(BlueprintCallable, Category = "Discord")
-	static void SetLargeImage(const FString InKeyName);
+	void SetLargeImage(const FString InKeyName);
 	
 	UFUNCTION(BlueprintCallable, Category = "Discord")
-	static void SetSmallImage(const FString InKeyName);
+	void SetSmallImage(const FString InKeyName);
 
 	UFUNCTION(BlueprintCallable, Category = "Discord")
-	static void SetLargeImageText(const FString InKeyName);
+	void SetLargeImageText(const FString InKeyName);
 	
 	UFUNCTION(BlueprintCallable, Category = "Discord")
-	static void SetSmallImageText(const FString InKeyName);
+	void SetSmallImageText(const FString InKeyName);
 
 	UFUNCTION(BlueprintCallable, Category = "Discord")
-	static void SetPartyId(const FString InNewPartyId);
+	void SetPartyId(const FString InNewPartyId);
 
 	UFUNCTION(BlueprintCallable, Category = "Discord")
-	static void SetPartySize(const int32 InNewPartySize);
+	void SetPartySize(const int32 InNewPartySize);
 
 	UFUNCTION(BlueprintCallable, Category = "Discord")
-	static void SetPartyMax(const int32 InNewPartyMax);
+	void SetPartyMax(const int32 InNewPartyMax);
 
 	UFUNCTION(BlueprintCallable, Category = "Discord")
-	static void SetJoinSecret(const FString InNewJoinSecret);
+	void SetJoinSecret(const FString InNewJoinSecret);
 
 	/**
 	* public UDiscordObject::StartDiscordTimer
