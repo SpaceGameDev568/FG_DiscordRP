@@ -26,6 +26,7 @@ AReporterSubsystem::AReporterSubsystem()
 	StateString = "Session Loading...";
 	GameLanguage = "Session Loading...";
 	DiscordClientID = "1082738646173614143";
+
 }
 // Initialize Subsystem
 void AReporterSubsystem::BeginPlay()
@@ -67,6 +68,7 @@ void AReporterSubsystem::Tick(float DeltaTime)
 		// Wait for the specified update interval
 		// https://forums.unrealengine.com/t/delay-function-equivalent-in-c/339952
 		FTimerHandle TimerHandle;
+		// Note: Currently doesn't pause the subsystem and spams the shit out of the log
 		GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &AReporterSubsystem::ProcessPresenceString, 5, false);
 	}
 }

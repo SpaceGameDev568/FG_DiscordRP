@@ -34,3 +34,23 @@ void UReporterFuncLib::InitializeReporter(FString &DiscordClientID, FString &Gam
 		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Discord Object not valid, exiting..."));
 	}
 }
+
+void UReporterFuncLib::FindPresenceString(UObject* ObjRef, FString& PresenceString)
+{
+	// Credit to SirDigby for helping me with this
+	auto player = Cast<UFGLocalPlayer>(ObjRef->GetWorld()->GetGameInstance()->GetFirstLocalPlayerController()->GetLocalPlayer());
+	FPlayerPresenceState pState;
+
+	//UCLASS(BlueprintType)
+	//class FACTORYGAME_API UFGLocalPlayer : public ULocalPlayer
+	//{
+	//	GENERATED_BODY()
+	//
+	//	friend class UReporterFuncLib;
+
+	// IF THIS ERRORS IN NEWER VERSIONS, ADD 'friend class UReporterFuncLib;' TO THE AREA ABOVE ON FGLocalPlayer.h
+	player->GetPresenceState(pState);
+	auto pString = pState.mPresenceString;
+
+	PresenceString = pString;
+}
