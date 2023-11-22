@@ -6,7 +6,7 @@
 	"FriendlyName": "Discord Rich Presence",
 	"Description": "A Discord Rich Presence mod for Satisfactory.",
 	"Category": "Modding",
-	"CreatedBy": "SpaceGameDev568",
+	"CreatedBy": "SpaceGameDev",
 	"CreatedByURL": "https://github.com/SpaceGameDev568",
 	"DocsURL": "https://ficsit.app/mod/FG_DiscordRP",
 	"MarketplaceURL": "https://ficsit.app/mod/FG_DiscordRP",
@@ -40,8 +40,11 @@
 	"Plugins": [
 		{
 			"Name": "SML",
-			"SemVersion": "^3.5.1",
-			"Enabled": true
+			"SemVersion": "^3.6.0",
+			"Enabled": true,
+			"BasePlugin": false
 		}
-	]
+	],
+	"RemoteVersionRange": "",
+	"AcceptsAnyRemoteVersion": false
 }

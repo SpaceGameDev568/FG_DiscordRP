@@ -17,4 +17,7 @@ class FG_DISCORDRP_API UReporterFuncLib : public UBlueprintFunctionLibrary
 
 	UFUNCTION(BlueprintCallable, Category = "Discord")
 	static void InitializeReporter(FString &DiscordClientID, FString &GameLanguage, UDiscordObject* &DiscordObject);
+
+	UFUNCTION(BlueprintCallable, Category = "Discord")
+	static void FindPresenceString(UObject* ObjRef, FString &PresenceString);
 };

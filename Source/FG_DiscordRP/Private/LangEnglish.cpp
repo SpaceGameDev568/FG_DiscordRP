@@ -7,7 +7,7 @@
 void ULangEnglish::InterpretEnglish(FString InStateString, FString InTierString, FString InPresenceString, UDiscordObject* DiscordObject)
 {
 
-	// Add small image will tier info
+	// Add small image with tier info
 	DiscordObject->SetSmallImage("satisfactory_logo");
 	DiscordObject->SetSmallImageText(InTierString);
 
