@@ -43,7 +43,7 @@ public:
 	UFUNCTION()
 	void ProcessPresenceString();
 
-	UFUNCTION()
-	void UpdatePresenceState();
+	// UFUNCTION()
+	// void UpdatePresenceState();
 
 };

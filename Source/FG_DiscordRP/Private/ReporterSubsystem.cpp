@@ -98,12 +98,12 @@ void AReporterSubsystem::ProcessPresenceString()
 	// TierString = StateString;
 }
 // Update Discord presence
-void AReporterSubsystem::UpdatePresenceState()
-{
-	DiscordObject->SetState(StateString);
-	UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("%s"), *StateString);
-	DiscordObject->SetState(DetailsString);
-	UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("%s"), *DetailsString);
-	DiscordObject->SetPartySize(NumPlayersInSession);
-	DiscordObject->SetPartyMax(4);
-}
+// void AReporterSubsystem::UpdatePresenceState()
+// {
+// 	DiscordObject->SetState(StateString);
+// 	UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("%s"), *StateString);
+// 	DiscordObject->SetState(DetailsString);
+// 	UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("%s"), *DetailsString);
+// 	DiscordObject->SetPartySize(NumPlayersInSession);
+// 	DiscordObject->SetPartyMax(4);
+// }
