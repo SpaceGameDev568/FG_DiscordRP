@@ -1,8 +1,5 @@
 // Copyright 2023 Jesse Hodgson. All Rights Reserved.
 
-// A message to any other modders looking at my horrendous code,
-// please understand that I have no idea how cpp works and this is just an attempt to fix my mod
-
 #include "ReporterSubsystem.h"
 
 #include <chrono>
