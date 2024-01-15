@@ -1,0 +1,93 @@
+name: Bug Report
+description: Create a report to let us know about an issue with the mod
+labels: ["bug", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this bug report!
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating System
+      description: What operating system are you using?
+      options:
+        - Winblows 10/11
+        - Linux
+      default: 0
+    validations:
+      required: true
+  - type: dropdown
+    id: environment
+    attributes:
+      label: Environment
+      description: Is this an issue occuring in single player, multiplayer, or with a dedicated server?
+      options:
+        - Single Player
+        - P2P Host (You are hosting a game locally and your friends are joining you)
+        - P2P Client (You are connecting to your friend's game)
+        - Client (You are connecting to a dedicated server)
+        - Server (You are either self hosting one or pay to have one hosted in the cloud with a service like ShockByte)
+      default: 0
+    validations:
+      required: true
+  - type: dropdown
+    id: game-version
+    attributes:
+      label: Game Version
+      description: What version of Satisfactory are you using?
+      options:
+        - Early Access
+        - Experimental
+      default: 0
+    validations:
+      required: true
+  - type: input
+    id: sml-version
+    attributes:
+      label: SML Version
+      description: What version of SML are you using?
+      placeholder: v3.7.0
+    validations:
+      required: true
+  - type: input
+    id: mod-version
+    attributes:
+      label: Mod Version
+      description: What version of the mod are you using?
+      placeholder: v1.1.8
+    validations:
+      required: true
+      
+  - type: textarea
+    id: description
+    attributes:
+      label: Describe the bug
+      description: Describe what happened when the bug occured and how we can reproduce the error on our own.
+      placeholder: Tell us what you see!
+    validations:
+      required: true      
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: Expected Behavior
+      description: What did you expect to happen?
+      placeholder: It should have...
+    validations:
+      required: true 
+  - type: textarea
+    id: attachments
+    attributes:
+      label: Attachments
+      description: If applicable, please attach screenshots or generated debug information here. To take a screenshot on Winblows 10/11, you can press `Win + Shift + S` and select the area you want to capture, then click this field on your GitHub report and press `Ctrl + V` to paste it in. To generate debug information, open SMM and click the "Settings" button -> Debug -> Generate Debug Info, and attach the `.zip` file here
+      placeholder: SMM-Debug-1-14-2024.zip, Screenshot-102957.jpg
+    validations:
+      required: false     
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Contact agreement
+      description: By submitting this issue, you agree to allow us to contact you for more information regarding this bug if necessary.
+      options:
+        - label: I agree to allow the developer to contact me for more information regarding this bug if necessary.
+          required: true

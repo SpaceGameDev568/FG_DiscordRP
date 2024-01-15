@@ -1,8 +1,5 @@
 // Copyright 2023 Jesse Hodgson. All Rights Reserved.
 
-// A message to any other modders looking at my horrendous code,
-// please understand that I have no idea how cpp works and this is just an attempt to fix my mod
-
 #include "ReporterSubsystem.h"
 
 #include <chrono>
@@ -50,6 +47,7 @@ void AReporterSubsystem::BeginPlay()
 	else
 	{
 		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Discord Object not valid, exiting..."));
+		this->Destroy();
 	}
 	// End Subsystem Initialization
 }
@@ -89,13 +87,31 @@ void AReporterSubsystem::ProcessPresenceString()
 
 	// IF THIS ERRORS IN NEWER VERSIONS, ADD 'friend class AReporterSubsystem;' TO THE AREA ABOVE ON FGLocalPlayer.h
 	player->GetPresenceState(pState);
-	auto pString = pState.mPresenceString;
+	FString pString = pState.mPresenceString;
 
-	ULangEnglish::InterpretEnglish(pString, pString, pString, DiscordObject);
+	UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("/s", pString));
 
-	// FString::Split(":", TierString, DetailsString, ESearchCase::IgnoreCase, ESearchDir::FromStart);
+	FString TierSplitOut;
 
-	// TierString = StateString;
+	pString.Split(TEXT(":"), &TierString, &TierSplitOut);
+
+	FString DetailsSplitOut;
+
+	TierSplitOut.Split(TEXT("in"), &DetailsString, &DetailsSplitOut);
+
+	FString StateSplitOutDISCARD;
+
+	DetailsSplitOut.Split(TEXT("."), &StateString, &StateSplitOutDISCARD);
+
+	ULangEnglish::InterpretEnglish(StateString, TierString, pString, DiscordObject);
+
+	DiscordObject->SetState(StateString);
+
+	DiscordObject->SetState(DetailsString);
+
+	DiscordObject->SetPartySize(NumPlayersInSession);
+
+	DiscordObject->SetPartyMax(4);
 }
 // Update Discord presence
 // void AReporterSubsystem::UpdatePresenceState()
