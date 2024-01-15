@@ -9,6 +9,8 @@
 #include "FGNetworkLibrary.h"
 #include "FGPlayerController.h"
 #include "FGLocalPlayer.h"
+#include "FGPlayerControllerBase.h"
+#include "FGAdminInterface.h"
 #include "LangEnglish.h"
 
 AReporterSubsystem::AReporterSubsystem()
@@ -49,27 +51,42 @@ void AReporterSubsystem::BeginPlay()
 		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Discord Object not valid, exiting..."));
 		this->Destroy();
 	}
+
+	APlayerController* pcRef;
+
+	// Set the session type to friends only
+	pcRef = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+
+	auto varPlayerController = Cast<AFGPlayerController>(pcRef->GetLocalPlayer());
+
+	varPlayerController->GetAdminInterface()->SetSessionVisibility(ESessionVisibility::SV_FriendsOnly);
+
+	FTimerHandle MemberTimerHandle;
+
+	GetWorldTimerManager().SetTimer(MemberTimerHandle, this, &AReporterSubsystem::ProcessPresenceString, 5.0f, true, 5.0f);
 	// End Subsystem Initialization
 }
-void AReporterSubsystem::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-	// Shut down subsystem if the user disabled it in the config
-	if(SubsystemDisabled)
-	{
-		SetActorTickEnabled(false);
-		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Subsystem disabled in config, shutting down..."));
-		UDiscordObject::DestroyDiscordObject();
-	}
-	else
-	{
-		// Wait for the specified update interval
-		// https://forums.unrealengine.com/t/delay-function-equivalent-in-c/339952
-		FTimerHandle TimerHandle;
-		// Note: Currently doesn't pause the subsystem and spams the shit out of the log
-		GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &AReporterSubsystem::ProcessPresenceString, 5, false);
-	}
-}
+
+//void AReporterSubsystem::Tick(float DeltaTime)
+//{
+//	Super::Tick(DeltaTime);
+//	// Shut down subsystem if the user disabled it in the config
+//	if(SubsystemDisabled)
+//	{
+//		SetActorTickEnabled(false);
+//		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Subsystem disabled in config, shutting down..."));
+//		UDiscordObject::DestroyDiscordObject();
+//	}
+//	else
+//	{
+//		// Wait for the specified update interval
+//		// https://forums.unrealengine.com/t/delay-function-equivalent-in-c/339952
+//
+//		// Note: Currently doesn't pause the subsystem and spams the shit out of the log
+//		GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &AReporterSubsystem::ProcessPresenceString, 5, false);
+//	}
+//}
+
 // Get and process the local player presence string
 void AReporterSubsystem::ProcessPresenceString()
 {
@@ -89,7 +106,7 @@ void AReporterSubsystem::ProcessPresenceString()
 	player->GetPresenceState(pState);
 	FString pString = pState.mPresenceString;
 
-	UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("/s", pString));
+	UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("%s"),*pString);
 
 	FString TierSplitOut;
 
@@ -107,7 +124,7 @@ void AReporterSubsystem::ProcessPresenceString()
 
 	DiscordObject->SetState(StateString);
 
-	DiscordObject->SetState(DetailsString);
+	DiscordObject->SetDetails(DetailsString);
 
 	DiscordObject->SetPartySize(NumPlayersInSession);
 
@@ -118,7 +135,7 @@ void AReporterSubsystem::ProcessPresenceString()
 // {
 // 	DiscordObject->SetState(StateString);
 // 	UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("%s"), *StateString);
-// 	DiscordObject->SetState(DetailsString);
+// 	DiscordObject->SetDetails(DetailsString);
 // 	UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("%s"), *DetailsString);
 // 	DiscordObject->SetPartySize(NumPlayersInSession);
 // 	DiscordObject->SetPartyMax(4);
