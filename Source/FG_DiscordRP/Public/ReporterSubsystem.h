@@ -1,4 +1,4 @@
-// Copyright 2023 Jesse Hodgson. All Rights Reserved.
+// Copyright 2023 - 2024 Jesse Hodgson. All Rights Reserved.
 
 #pragma once
 
@@ -6,6 +6,7 @@
 #include "DiscordObject.h"
 #include "FGPlayerController.h"
 #include "Subsystem/ModSubsystem.h"
+#include "DRP_ConfigStruct.h"
 #include "ReporterSubsystem.generated.h"
 
 UCLASS()
@@ -23,8 +24,6 @@ protected:
 
 public:
 
-	//virtual void Tick(float DeltaTime) override;
-
 	UDiscordObject* DiscordObject;
 	float UpdateInterval;
 	bool SubsystemDisabled;
@@ -37,10 +36,14 @@ public:
 	FString DiscordClientID;
 	FPlayerPresenceState PresenceState;
 
+	FDRP_ConfigStruct myConfig;
+
+	bool EnableDebugLogging;
+	bool DisableSubsystem;
+	bool IsDeveloper;
+	//bool ResetDiscordObject;
+
 	UFUNCTION()
 	void ProcessPresenceString();
-
-	// UFUNCTION()
-	// void UpdatePresenceState();
 
 };

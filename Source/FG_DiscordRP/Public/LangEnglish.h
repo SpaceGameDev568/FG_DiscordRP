@@ -1,4 +1,4 @@
-// Copyright 2023 Jesse Hodgson. All Rights Reserved.
+// Copyright 2023 - 2024 Jesse Hodgson. All Rights Reserved.
 
 #pragma once
 
@@ -18,5 +18,5 @@ class FG_DISCORDRP_API ULangEnglish : public UBlueprintFunctionLibrary
 	friend class AReporterSubsystem;
 
 	UFUNCTION(BlueprintCallable, Category = "Discord")
-	static void InterpretEnglish(FString InStateString, FString InTierString, FString InPresenceString, UDiscordObject* DiscordObject);
+	static void InterpretEnglish(FString InStateString, FString InTierString, FString InPresenceString, UDiscordObject* DiscordObject, bool EnableDebugLogging, bool &TutorialException);
 };
