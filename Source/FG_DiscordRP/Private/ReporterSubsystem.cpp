@@ -11,10 +11,12 @@
 #include "LangEnglish.h"
 #include "GameFramework/GameMode.h"
 #include "DRP_ConfigStruct.h"
+#include "Net/UnrealNetwork.h"
 
 AReporterSubsystem::AReporterSubsystem()
 {
-	PrimaryActorTick.bCanEverTick = true;
+	bReplicates = true;
+
 	UpdateInterval = 5.0f;
 	SubsystemDisabled = false;
 	NumPlayersInSession = 1;
@@ -35,6 +37,7 @@ AReporterSubsystem::AReporterSubsystem()
 	//ResetDiscordObject = myConfig.reset_discord_object;
 
 }
+
 // Initialize Subsystem
 void AReporterSubsystem::BeginPlay()
 {
@@ -76,6 +79,9 @@ void AReporterSubsystem::BeginPlay()
 		}
 		this->Destroy();
 	}
+
+	// Register Steam
+	DiscordObject->RegisterSteam();
 
 	// Set the session type to friends only
 	APlayerController* PCRef = UGameplayStatics::GetPlayerController(GetWorld(), 0);
