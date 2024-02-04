@@ -26,7 +26,6 @@ public:
 
 	UDiscordObject* DiscordObject;
 	float UpdateInterval;
-	bool SubsystemDisabled;
 	int NumPlayersInSession;
 	FString PresenceString;
 	FString TierString;
@@ -39,7 +38,6 @@ public:
 	FDRP_ConfigStruct myConfig;
 
 	bool EnableDebugLogging;
-	bool DisableSubsystem;
 	bool IsDeveloper;
 	//bool ResetDiscordObject;
 

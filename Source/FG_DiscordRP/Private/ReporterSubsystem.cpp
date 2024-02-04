@@ -18,7 +18,6 @@ AReporterSubsystem::AReporterSubsystem()
 	bReplicates = true;
 
 	UpdateInterval = 5.0f;
-	SubsystemDisabled = false;
 	NumPlayersInSession = 1;
 	PresenceString = "Session Loading...";
 	TierString = "Session Loading...";
@@ -26,6 +25,7 @@ AReporterSubsystem::AReporterSubsystem()
 	StateString = "Session Loading...";
 	GameLanguage = "Session Loading...";
 	DiscordClientID = "1082738646173614143";
+	DiscordObject = nullptr;
 
 	// Initialize variables from config
 	{
@@ -36,10 +36,8 @@ AReporterSubsystem::AReporterSubsystem()
 	#endif
 	}
 
-
 	EnableDebugLogging = myConfig.debug_logging;
 	UpdateInterval = myConfig.update_interval;
-	DisableSubsystem = myConfig.disable_subsystem;
 	IsDeveloper = myConfig.is_developer;
 	//ResetDiscordObject = myConfig.reset_discord_object;
 
@@ -59,32 +57,18 @@ void AReporterSubsystem::BeginPlay()
 	// Create and assign our DiscordObject to a variable
 	UDiscordObject::CreateDiscordObject(DiscordClientID, false, true);
 	DiscordObject = UDiscordObject::GetDiscordObject();
-	// Check if user wants to disable the subsystem
-	if(DisableSubsystem)
-	{
-		DiscordObject->DestroyDiscordObject();
-		this->Destroy();
-	}
+
 	// Log the value of our DiscordObject
-	if(EnableDebugLogging)
-	{
-		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("%s"), *DiscordObject->GetName());
-	}
+	UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("%s"), *DiscordObject->GetName());
+
 	// Check if our DiscordObject is valid or not before continuing
 	if(IsValid(DiscordObject))
 	{
-		if(EnableDebugLogging)
-		{
-			UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Discord Object is valid."));
-		}
+		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Discord Object is valid."));
 	}
 	else
 	{
-		if(EnableDebugLogging)
-		{
-			UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Discord Object not valid, exiting..."));
-		}
-		this->Destroy();
+		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Discord Object not valid, please report this error."));
 	}
 
 	// Set the session type to friends only
@@ -197,10 +181,7 @@ void AReporterSubsystem::ProcessPresenceString()
 	ULangEnglish::InterpretEnglish(StateString, TierString, pString, DiscordObject, EnableDebugLogging, TutorialException);
 	} else
 	{
-		if(EnableDebugLogging)
-		{
 			UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("This game language is not currently supported by the Discord Rich Presence mod: %s"), *GameLanguage);
-		}
 
 		DiscordObject->SetLargeImage("satisfactory_logo");
 		DiscordObject->SetLargeImageText("Satisfactory");
