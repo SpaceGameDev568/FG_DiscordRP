@@ -28,7 +28,14 @@ AReporterSubsystem::AReporterSubsystem()
 	DiscordClientID = "1082738646173614143";
 
 	// Initialize variables from config
+	{
+	#if WITH_EDITOR
+	UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Shipping env not detected, avoiding crash"));
+	#else
 	myConfig = FDRP_ConfigStruct::GetActiveConfig(GetWorld());
+	#endif
+	}
+
 
 	EnableDebugLogging = myConfig.debug_logging;
 	UpdateInterval = myConfig.update_interval;
@@ -79,9 +86,6 @@ void AReporterSubsystem::BeginPlay()
 		}
 		this->Destroy();
 	}
-
-	// Register Steam
-	DiscordObject->RegisterSteam();
 
 	// Set the session type to friends only
 	APlayerController* PCRef = UGameplayStatics::GetPlayerController(GetWorld(), 0);
@@ -181,11 +185,11 @@ void AReporterSubsystem::ProcessPresenceString()
 
 	FString DetailsSplitOut;
 
-	TierSplitOut.Split(TEXT("in"), &DetailsString, &DetailsSplitOut);
+	TierSplitOut.Split(TEXT("in"), &DetailsString, &DetailsSplitOut, ESearchCase::IgnoreCase, ESearchDir::FromEnd);
 
 	FString StateSplitOutDISCARD;
 
-	DetailsSplitOut.Split(TEXT("."), &StateString, &StateSplitOutDISCARD);
+	DetailsSplitOut.Split(TEXT("."), &StateString, &StateSplitOutDISCARD, ESearchCase::IgnoreCase, ESearchDir::FromEnd);
 
 	bool TutorialException = false;
 

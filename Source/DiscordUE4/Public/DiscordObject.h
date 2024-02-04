@@ -70,9 +70,6 @@ public:
 
 	UDiscordObject();
 
-	UFUNCTION(BlueprintCallable, Category = "Discord")
-	static void RegisterSteam();
-
 	UPROPERTY(BlueprintAssignable, Category = "Discord|Delegates")
 	FOnDiscordResult OnStateSet;
 

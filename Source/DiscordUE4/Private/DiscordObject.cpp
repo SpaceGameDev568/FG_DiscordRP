@@ -19,12 +19,6 @@ UDiscordObject::UDiscordObject()
 	bCanTick = bTimerStarted = false;
 }
 
-// Custom SpaceGameDev function to allow launching with Steam on profile
-void UDiscordObject::RegisterSteam()
-{
-	core->ActivityManager().RegisterSteam(526870);
-}
-
 void UDiscordObject::CreateDiscordObject(FString InClientID, const bool bRequireDiscordRunning /*= false*/, const bool bStartElapsedTimer /*= true*/)
 {
 	if (!DiscordObjectInstance.IsValid())
