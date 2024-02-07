@@ -11,12 +11,9 @@
 #include "LangEnglish.h"
 #include "GameFramework/GameMode.h"
 #include "DRP_ConfigStruct.h"
-#include "Net/UnrealNetwork.h"
 
 AReporterSubsystem::AReporterSubsystem()
 {
-	bReplicates = true;
-
 	UpdateInterval = 5.0f;
 	NumPlayersInSession = 1;
 	PresenceString = "Session Loading...";
@@ -39,8 +36,6 @@ AReporterSubsystem::AReporterSubsystem()
 	EnableDebugLogging = myConfig.debug_logging;
 	UpdateInterval = myConfig.update_interval;
 	IsDeveloper = myConfig.is_developer;
-	//ResetDiscordObject = myConfig.reset_discord_object;
-
 }
 
 // Initialize Subsystem
@@ -48,10 +43,8 @@ void AReporterSubsystem::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if(EnableDebugLogging)
-	{
-		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Loaded FG_DRP Reporter Subsystem."));
-	}
+	UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Loaded FG_DRP Reporter Subsystem."));
+
 	// Get the language for the interpreter to use later
 	GameLanguage = UFGBlueprintFunctionLibrary::GetLanguage();
 	// Create and assign our DiscordObject to a variable
@@ -106,43 +99,6 @@ void AReporterSubsystem::BeginPlay()
 void AReporterSubsystem::ProcessPresenceString()
 {
 
-// // Manually reset the Discord Object if the user thinks there's a problem
-// ResetDiscordObject = myConfig.reset_discord_object;
-
-// if(ResetDiscordObject)
-// {
-// 	if(EnableDebugLogging)
-// 	{
-// 		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Discord Object reset requested"));
-// 	}
-
-// 	myConfig.reset_discord_object = false;
-// 	GConfig->Flush(true, GGameIni);
-// 	DiscordObject->DestroyDiscordObject();
-
-// 	// Create and assign our DiscordObject to a variable
-// 	UDiscordObject::CreateDiscordObject(DiscordClientID, false, true);
-// 	DiscordObject = UDiscordObject::GetDiscordObject();
-// 	// Log the value of our DiscordObject
-// 	UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("%s"), *DiscordObject->GetName());
-// 	// Check if our DiscordObject is valid or not before continuing
-// 	if(IsValid(DiscordObject))
-// 	{
-// 		if(EnableDebugLogging)
-// 		{
-// 			UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Discord Object is valid."));
-// 		}
-// 	}
-// 	else
-// 	{
-// 		if(EnableDebugLogging)
-// 		{
-// 			UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Discord Object not valid, exiting..."));
-// 		}
-// 		this->Destroy();
-// 	}
-// }
-
 	// Thanks to SirDigby for helping me with this
 	auto player = Cast<UFGLocalPlayer>(this->GetWorld()->GetGameInstance()->GetFirstLocalPlayerController()->GetLocalPlayer());
 	FPlayerPresenceState pState;
@@ -158,10 +114,7 @@ void AReporterSubsystem::ProcessPresenceString()
 	player->GetPresenceState(pState);
 	FString pString = pState.mPresenceString;
 
-	if(EnableDebugLogging)
-	{
-		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("%s"),*pString);
-	}
+	UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("%s"),*pString);
 
 	FString TierSplitOut;
 
@@ -181,7 +134,7 @@ void AReporterSubsystem::ProcessPresenceString()
 	ULangEnglish::InterpretEnglish(StateString, TierString, pString, DiscordObject, EnableDebugLogging, TutorialException);
 	} else
 	{
-			UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("This game language is not currently supported by the Discord Rich Presence mod: %s"), *GameLanguage);
+		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("This game language is not currently supported by the Discord Rich Presence mod: %s"), *GameLanguage);
 
 		DiscordObject->SetLargeImage("satisfactory_logo");
 		DiscordObject->SetLargeImageText("Satisfactory");
@@ -213,5 +166,4 @@ void AReporterSubsystem::ProcessPresenceString()
 	DiscordObject->SetPartySize(NumPlayersInSession);
 
 	DiscordObject->SetPartyMax(4);
-
 }
