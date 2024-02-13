@@ -11,6 +11,7 @@
 #include "LangEnglish.h"
 #include "GameFramework/GameMode.h"
 #include "DRP_ConfigStruct.h"
+#include "GameFramework/GameSession.h"
 
 AReporterSubsystem::AReporterSubsystem()
 {
@@ -32,6 +33,25 @@ AReporterSubsystem::AReporterSubsystem()
 	myConfig = FDRP_ConfigStruct::GetActiveConfig(GetWorld());
 	#endif
 	}
+
+	// Make MaxPlayers count actually track the amount allowed by the server
+	//TArray<AActor*> OutActors;
+	//TSubclassOf<AGameSession> GameSession;
+	//UGameplayStatics::GetAllActorsOfClass(GetWorld(), GameSession, OutActors);
+//
+	//if(OutActors.Num() == 0)
+	//{
+	//	UE_LOG(LogFGDiscordRP, Verbose, TEXT("Found none of type AGameSession"));
+	//}
+	//else
+	//{
+	//	for (auto&  Actor: OutActors)
+	//	{
+	//		Actor->
+	//	}
+	//}
+//
+	//int32 MaxPlayers = AGameSession::MaxPlayers;
 
 	EnableDebugLogging = myConfig.debug_logging;
 	UpdateInterval = myConfig.update_interval;
