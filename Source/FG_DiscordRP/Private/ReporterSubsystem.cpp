@@ -12,6 +12,7 @@
 #include "GameFramework/GameMode.h"
 #include "DRP_ConfigStruct.h"
 #include "GameFramework/GameSession.h"
+#include "ModLoading/ModLoadingLibrary.h"
 
 AReporterSubsystem::AReporterSubsystem()
 {
@@ -22,7 +23,7 @@ AReporterSubsystem::AReporterSubsystem()
 	DetailsString = "Session Loading...";
 	StateString = "Session Loading...";
 	GameLanguage = "Session Loading...";
-	DiscordClientID = "1082738646173614143";
+	DiscordApplicationID = "1082738646173614143";
 	DiscordObject = nullptr;
 
 	// Initialize variables from config
@@ -65,10 +66,20 @@ void AReporterSubsystem::BeginPlay()
 
 	UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Loaded FG_DRP Reporter Subsystem."));
 
+	//FModInfo ModInfo;
+//
+	//UModLoadingLibrary *ModLoadingLibrary = NewObject<UModLoadingLibrary>();
+//
+	//ModLoadingLibrary->GetLoadedModInfo("FG_DiscordRP", ModInfo);
+//
+	//FString ModVersion = ModInfo.Version->ToString();
+//
+	//UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("%s"), *ModVersion);
+
 	// Get the language for the interpreter to use later
 	GameLanguage = UFGBlueprintFunctionLibrary::GetLanguage();
 	// Create and assign our DiscordObject to a variable
-	UDiscordObject::CreateDiscordObject(DiscordClientID, false, true);
+	UDiscordObject::CreateDiscordObject(DiscordApplicationID, false, true);
 	DiscordObject = UDiscordObject::GetDiscordObject();
 
 	// Log the value of our DiscordObject
@@ -89,25 +100,23 @@ void AReporterSubsystem::BeginPlay()
 
 	UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("%s"), *PCRef->GetName());
 
-	if (PCRef != nullptr)
+	if (PCRef == nullptr)
 	{
 		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("PCRef is a null pointer"));
 	}
 
 	AFGPlayerController* VarPlayerController = Cast<AFGPlayerController>(PCRef);
 
-	ESessionVisibility SessionVisibility = ESessionVisibility::SV_FriendsOnly;
+	UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("%s"), *VarPlayerController->GetName());
 
-	// Potential null pointer ^v REMEMBER TO FIX
-	if (VarPlayerController != nullptr)
-	{
-		VarPlayerController->GetAdminInterface()->SetSessionVisibility(SessionVisibility);
-	}
-	else
+	if (VarPlayerController == nullptr)
 	{
 		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("VarPlayerController is a null pointer"));
 	}
-
+	else
+	{
+		VarPlayerController->GetAdminInterface()->SetSessionVisibility(ESessionVisibility::SV_FriendsOnly);
+	}
 
 	FTimerHandle MemberTimerHandle;
 

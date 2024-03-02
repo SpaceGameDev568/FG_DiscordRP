@@ -1,11 +1,12 @@
 // Copyright 2023 - 2024 Jesse Hodgson. All Rights Reserved.
+
+
 #include "LangEnglish.h"
 #include "FG_DiscordRP.h"
 #include "DiscordObject.h"
 
 void ULangEnglish::InterpretEnglish(FString InStateString, FString InTierString, FString InPresenceString, UDiscordObject* DiscordObject, bool EnableDebugLogging, bool &TutorialException)
 {
-
 	// Add small image with tier info
 	DiscordObject->SetSmallImage("satisfactory_logo");
 	DiscordObject->SetSmallImageText(InTierString);
