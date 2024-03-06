@@ -9,6 +9,7 @@
 #include "FGPlayerControllerBase.h"
 #include "FGAdminInterface.h"
 #include "LangEnglish.h"
+#include "LangSwedish.h"
 #include "GameFramework/GameMode.h"
 #include "DRP_ConfigStruct.h"
 #include "GameFramework/GameSession.h"
@@ -78,6 +79,7 @@ void AReporterSubsystem::BeginPlay()
 
 	// Get the language for the interpreter to use later
 	GameLanguage = UFGBlueprintFunctionLibrary::GetLanguage();
+	UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("%s"), *GameLanguage);
 	// Create and assign our DiscordObject to a variable
 	UDiscordObject::CreateDiscordObject(DiscordApplicationID, false, true);
 	DiscordObject = UDiscordObject::GetDiscordObject();
@@ -98,20 +100,20 @@ void AReporterSubsystem::BeginPlay()
 	// Set the session type to friends only
 	APlayerController* PCRef = UGameplayStatics::GetPlayerController(GetWorld(), 0);
 
-	UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("%s"), *PCRef->GetName());
+	UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("PCRef: %s"), *PCRef->GetName());
 
-	if (PCRef == nullptr)
+	if (IsValid(PCRef))
 	{
-		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("PCRef is a null pointer"));
+		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("PCRef is a null pointer/not valid"));
 	}
 
 	AFGPlayerController* VarPlayerController = Cast<AFGPlayerController>(PCRef);
 
-	UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("%s"), *VarPlayerController->GetName());
+	UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("VarPlayerController: %s"), *VarPlayerController->GetName());
 
-	if (VarPlayerController == nullptr)
+	if (IsValid(VarPlayerController))
 	{
-		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("VarPlayerController is a null pointer"));
+		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("VarPlayerController is a null pointer/not valid"));
 	}
 	else
 	{
@@ -161,6 +163,8 @@ void AReporterSubsystem::ProcessPresenceString()
 
 	if(GameLanguage == "en-US-POSIX" || GameLanguage == "en-CA" || GameLanguage == "en-GB"){
 	ULangEnglish::InterpretEnglish(StateString, TierString, pString, DiscordObject, EnableDebugLogging, TutorialException);
+	} else if(GameLanguage == "sv"){
+	ULangSwedish::InterpretSwedish(StateString, TierString, pString, DiscordObject, EnableDebugLogging, TutorialException);
 	} else
 	{
 		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("This game language is not currently supported by the Discord Rich Presence mod: %s"), *GameLanguage);
