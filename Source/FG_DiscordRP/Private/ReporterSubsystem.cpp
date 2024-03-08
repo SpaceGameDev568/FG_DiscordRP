@@ -9,11 +9,8 @@
 #include "FGPlayerControllerBase.h"
 #include "FGAdminInterface.h"
 #include "LangEnglish.h"
-#include "LangSwedish.h"
 #include "GameFramework/GameMode.h"
 #include "DRP_ConfigStruct.h"
-#include "GameFramework/GameSession.h"
-#include "ModLoading/ModLoadingLibrary.h"
 
 AReporterSubsystem::AReporterSubsystem()
 {
@@ -106,7 +103,6 @@ void AReporterSubsystem::BeginPlay()
 	{
 		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("PCRef is a null pointer/not valid"));
 	}
-
 	AFGPlayerController* VarPlayerController = Cast<AFGPlayerController>(PCRef);
 
 	UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("VarPlayerController: %s"), *VarPlayerController->GetName());
@@ -115,9 +111,9 @@ void AReporterSubsystem::BeginPlay()
 	{
 		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("VarPlayerController is a null pointer/not valid"));
 	}
-	else
+	else if(AFGAdminInterface* AdminInterface = VarPlayerController->GetAdminInterface())
 	{
-		VarPlayerController->GetAdminInterface()->SetSessionVisibility(ESessionVisibility::SV_FriendsOnly);
+		AdminInterface->SetSessionVisibility(ESessionVisibility::SV_FriendsOnly);
 	}
 
 	FTimerHandle MemberTimerHandle;
@@ -163,8 +159,6 @@ void AReporterSubsystem::ProcessPresenceString()
 
 	if(GameLanguage == "en-US-POSIX" || GameLanguage == "en-CA" || GameLanguage == "en-GB"){
 	ULangEnglish::InterpretEnglish(StateString, TierString, pString, DiscordObject, EnableDebugLogging, TutorialException);
-	} else if(GameLanguage == "sv"){
-	ULangSwedish::InterpretSwedish(StateString, TierString, pString, DiscordObject, EnableDebugLogging, TutorialException);
 	} else
 	{
 		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("This game language is not currently supported by the Discord Rich Presence mod: %s"), *GameLanguage);
