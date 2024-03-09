@@ -33,6 +33,8 @@ public:
 	// Number of players currently in the game session
 	int NumPlayersInSession;
 
+	int MaxPlayers;
+
 	// String representing the user's presence in the game
 	FString PresenceString;
 

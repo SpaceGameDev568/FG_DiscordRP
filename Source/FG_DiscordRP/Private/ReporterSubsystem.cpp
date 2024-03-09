@@ -8,14 +8,19 @@
 #include "FGLocalPlayer.h"
 #include "FGPlayerControllerBase.h"
 #include "FGAdminInterface.h"
-#include "LangEnglish.h"
+#include "Languages/LangEnglish.h"
 #include "GameFramework/GameMode.h"
 #include "DRP_ConfigStruct.h"
+#include "FGGameSession.h"
+#include "GameFramework/GameSession.h"
+#include "ModLoading/ModLoadingLibrary.h"
+#include "Network/NetworkHandler.h"
 
 AReporterSubsystem::AReporterSubsystem()
 {
 	UpdateInterval = 5.0f;
 	NumPlayersInSession = 1;
+	MaxPlayers = 4;
 	PresenceString = "Session Loading...";
 	TierString = "Session Loading...";
 	DetailsString = "Session Loading...";
@@ -33,25 +38,6 @@ AReporterSubsystem::AReporterSubsystem()
 	#endif
 	}
 
-	// Make MaxPlayers count actually track the amount allowed by the server
-	//TArray<AActor*> OutActors;
-	//TSubclassOf<AGameSession> GameSession;
-	//UGameplayStatics::GetAllActorsOfClass(GetWorld(), GameSession, OutActors);
-//
-	//if(OutActors.Num() == 0)
-	//{
-	//	UE_LOG(LogFGDiscordRP, Verbose, TEXT("Found none of type AGameSession"));
-	//}
-	//else
-	//{
-	//	for (auto&  Actor: OutActors)
-	//	{
-	//		Actor->
-	//	}
-	//}
-//
-	//int32 MaxPlayers = AGameSession::MaxPlayers;
-
 	EnableDebugLogging = myConfig.debug_logging;
 	UpdateInterval = myConfig.update_interval;
 	IsDeveloper = myConfig.is_developer;
@@ -64,15 +50,16 @@ void AReporterSubsystem::BeginPlay()
 
 	UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Loaded FG_DRP Reporter Subsystem."));
 
-	//FModInfo ModInfo;
-//
-	//UModLoadingLibrary *ModLoadingLibrary = NewObject<UModLoadingLibrary>();
-//
-	//ModLoadingLibrary->GetLoadedModInfo("FG_DiscordRP", ModInfo);
-//
-	//FString ModVersion = ModInfo.Version->ToString();
-//
-	//UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("%s"), *ModVersion);
+	FModInfo ModInfo;
+
+	const UGameInstance* GameInstance = GetGameInstance();
+
+	UModLoadingLibrary *ModLoadingLibrary = GameInstance->GetSubsystem<UModLoadingLibrary>();
+
+	ModLoadingLibrary->GetLoadedModInfo("FG_DiscordRP", ModInfo);
+
+	// Log the name and version of the mod
+	UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("%s"), *ModInfo.Name.Append(", " + ModInfo.Version.ToString()));
 
 	// Get the language for the interpreter to use later
 	GameLanguage = UFGBlueprintFunctionLibrary::GetLanguage();
@@ -99,20 +86,34 @@ void AReporterSubsystem::BeginPlay()
 
 	UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("PCRef: %s"), *PCRef->GetName());
 
-	if (IsValid(PCRef))
-	{
-		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("PCRef is a null pointer/not valid"));
-	}
 	AFGPlayerController* VarPlayerController = Cast<AFGPlayerController>(PCRef);
 
 	UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("VarPlayerController: %s"), *VarPlayerController->GetName());
 
-	if (IsValid(VarPlayerController))
+	APlayerState* PlayerState = VarPlayerController->GetPlayerState<APlayerState>();
+
+	UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("%s"), *PlayerState->GetPlayerName().Append(" has joined the server."));
+
+	if(AFGAdminInterface* AdminInterface = VarPlayerController->GetAdminInterface())
 	{
-		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("VarPlayerController is a null pointer/not valid"));
-	}
-	else if(AFGAdminInterface* AdminInterface = VarPlayerController->GetAdminInterface())
-	{
+		// Make MaxPlayers count actually track the amount allowed by the server
+		AFGGameSession* GameSession;
+
+		//UCLASS(notplaceable)
+		//class FACTORYGAME_API AFGAdminInterface : public AInfo
+		//{
+		//	GENERATED_BODY()
+		//
+		//	friend class AReporterSubsystem;
+
+		// IF THIS ERRORS IN NEWER VERSIONS, ADD 'friend class AReporterSubsystem;' TO THE AREA ABOVE ON FGAdminInterface.h
+
+		// Get the game session
+		GameSession = AdminInterface->GetGameSession();
+
+		// Get the amount of players allowed in the game session
+		MaxPlayers = GameSession->MaxPlayers;
+
 		AdminInterface->SetSessionVisibility(ESessionVisibility::SV_FriendsOnly);
 	}
 
@@ -192,5 +193,5 @@ void AReporterSubsystem::ProcessPresenceString()
 
 	DiscordObject->SetPartySize(NumPlayersInSession);
 
-	DiscordObject->SetPartyMax(4);
+	DiscordObject->SetPartyMax(MaxPlayers);
 }

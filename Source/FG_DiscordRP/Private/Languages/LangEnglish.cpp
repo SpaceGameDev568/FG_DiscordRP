@@ -1,6 +1,6 @@
 // Copyright 2023 - 2024 Jesse Hodgson. All Rights Reserved.
 
-#include "LangEnglish.h"
+#include "Languages/LangEnglish.h"
 #include "FG_DiscordRP.h"
 #include "DiscordObject.h"
 
