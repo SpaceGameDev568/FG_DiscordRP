@@ -11,6 +11,7 @@ public class FG_DiscordRP : ModuleRules
 		PublicIncludePaths.AddRange(
 			new string[] {
 			// ... add public include paths required here ...
+                "DiscordSDK"
 			}
 			);
 				

@@ -22,6 +22,8 @@ protected:
 
 	virtual void BeginPlay() override;
 
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+
 public:
 
 	// Pointer to a DiscordObject, used for interacting with the Discord API
@@ -60,6 +62,8 @@ public:
 
 	bool EnableDebugLogging;
 	bool IsDeveloper;
+
+	FTimerHandle MemberTimerHandle;
 
 	UFUNCTION()
 	void ProcessPresenceString();

@@ -14,7 +14,7 @@
 #include "FGGameSession.h"
 #include "GameFramework/GameSession.h"
 #include "ModLoading/ModLoadingLibrary.h"
-#include "Network/NetworkHandler.h"
+#include "activity_manager.h"
 
 AReporterSubsystem::AReporterSubsystem()
 {
@@ -59,17 +59,16 @@ void AReporterSubsystem::BeginPlay()
 	ModLoadingLibrary->GetLoadedModInfo("FG_DiscordRP", ModInfo);
 
 	// Log the name and version of the mod
-	UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("%s"), *ModInfo.Name.Append(", " + ModInfo.Version.ToString()));
+	UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("%s"), *ModInfo.FriendlyName.Append(", " + ModInfo.Version.ToString()));
+	UE_LOG(LogFG_DISCORDRP, Display, TEXT("Build Date: %s %s"), ANSI_TO_TCHAR(__DATE__), ANSI_TO_TCHAR(__TIME__));
+	UE_LOG(LogFG_DISCORDRP, Display, TEXT("Enviroment: %d"), this->GetWorld()->GetNetMode());
 
 	// Get the language for the interpreter to use later
 	GameLanguage = UFGBlueprintFunctionLibrary::GetLanguage();
-	UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("%s"), *GameLanguage);
+	UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("%s"), *GameLanguage.Append(" is the language being used."));
 	// Create and assign our DiscordObject to a variable
 	UDiscordObject::CreateDiscordObject(DiscordApplicationID, false, true);
 	DiscordObject = UDiscordObject::GetDiscordObject();
-
-	// Log the value of our DiscordObject
-	UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("%s"), *DiscordObject->GetName());
 
 	// Check if our DiscordObject is valid or not before continuing
 	if(IsValid(DiscordObject))
@@ -81,117 +80,130 @@ void AReporterSubsystem::BeginPlay()
 		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Discord Object not valid, please report this error."));
 	}
 
-	// Set the session type to friends only
-	APlayerController* PCRef = UGameplayStatics::GetPlayerController(GetWorld(), 0);
-
-	UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("PCRef: %s"), *PCRef->GetName());
-
-	AFGPlayerController* VarPlayerController = Cast<AFGPlayerController>(PCRef);
-
-	UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("VarPlayerController: %s"), *VarPlayerController->GetName());
-
-	APlayerState* PlayerState = VarPlayerController->GetPlayerState<APlayerState>();
-
-	UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("%s"), *PlayerState->GetPlayerName().Append(" has joined the server."));
-
-	if(AFGAdminInterface* AdminInterface = VarPlayerController->GetAdminInterface())
+	// If we are on a dedicated server, skip this step
+	if(this->GetWorld()->GetNetMode() != NM_DedicatedServer && this->GetWorld()->GetNetMode() != NM_Client)
 	{
-		// Make MaxPlayers count actually track the amount allowed by the server
-		AFGGameSession* GameSession;
+		// Set the session type to friends only
+		const AFGPlayerController* PlayerController = Cast<AFGPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
 
-		//UCLASS(notplaceable)
-		//class FACTORYGAME_API AFGAdminInterface : public AInfo
-		//{
-		//	GENERATED_BODY()
-		//
-		//	friend class AReporterSubsystem;
+		const APlayerState* PlayerState = PlayerController->GetPlayerState<APlayerState>();
+		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("%s"), *PlayerState->GetPlayerName().Append(" has joined the server."));
 
-		// IF THIS ERRORS IN NEWER VERSIONS, ADD 'friend class AReporterSubsystem;' TO THE AREA ABOVE ON FGAdminInterface.h
+		if(AFGAdminInterface* AdminInterface = PlayerController->GetAdminInterface())
+		{
+			//UCLASS(notplaceable)
+			//class FACTORYGAME_API AFGAdminInterface : public AInfo
+			//{
+			//	GENERATED_BODY()
+			//
+			//	friend class AReporterSubsystem;
 
-		// Get the game session
-		GameSession = AdminInterface->GetGameSession();
+			// IF THIS ERRORS IN NEWER VERSIONS, ADD 'friend class AReporterSubsystem;' TO THE AREA ABOVE ON FGAdminInterface.h
 
-		// Get the amount of players allowed in the game session
-		MaxPlayers = GameSession->MaxPlayers;
+			// Make MaxPlayers count actually track the amount allowed by the server
+			const AFGGameSession* GameSession = AdminInterface->GetGameSession();
 
-		AdminInterface->SetSessionVisibility(ESessionVisibility::SV_FriendsOnly);
+			// Get the amount of players allowed in the game session
+			MaxPlayers = GameSession->MaxPlayers;
+
+			AdminInterface->SetSessionVisibility(ESessionVisibility::SV_FriendsOnly);
+		}
 	}
-
-	FTimerHandle MemberTimerHandle;
+	else
+	{
+		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Dedicated Server detected, skipping session setup."));
+	}
 
 	GetWorldTimerManager().SetTimer(MemberTimerHandle, this, &AReporterSubsystem::ProcessPresenceString, UpdateInterval, true, UpdateInterval);
 	// End Subsystem Initialization
 }
 
+void AReporterSubsystem::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	Super::EndPlay(EEndPlayReason::LevelTransition);
+
+	GetWorldTimerManager().ClearTimer(MemberTimerHandle);
+}
+
 // Get and process the local player presence string
 void AReporterSubsystem::ProcessPresenceString()
 {
-
-	// Thanks to SirDigby for helping me with this
-	auto player = Cast<UFGLocalPlayer>(this->GetWorld()->GetGameInstance()->GetFirstLocalPlayerController()->GetLocalPlayer());
-	FPlayerPresenceState pState;
-
-	//UCLASS(BlueprintType)
-	//class FACTORYGAME_API UFGLocalPlayer : public ULocalPlayer
-	//{
-	//	GENERATED_BODY()
-	//
-	//	friend class AReporterSubsystem;
-
-	// IF THIS ERRORS IN NEWER VERSIONS, ADD 'friend class AReporterSubsystem;' TO THE AREA ABOVE ON FGLocalPlayer.h
-	player->GetPresenceState(pState);
-	FString pString = pState.mPresenceString;
-
-	UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("%s"),*pString);
-
-	FString TierSplitOut;
-
-	pString.Split(TEXT(":"), &TierString, &TierSplitOut);
-
-	FString DetailsSplitOut;
-
-	TierSplitOut.Split(TEXT("in"), &DetailsString, &DetailsSplitOut, ESearchCase::IgnoreCase, ESearchDir::FromEnd);
-
-	FString StateSplitOutDISCARD;
-
-	DetailsSplitOut.Split(TEXT("."), &StateString, &StateSplitOutDISCARD, ESearchCase::IgnoreCase, ESearchDir::FromEnd);
-
-	bool TutorialException = false;
-
-	if(GameLanguage == "en-US-POSIX" || GameLanguage == "en-CA" || GameLanguage == "en-GB"){
-	ULangEnglish::InterpretEnglish(StateString, TierString, pString, DiscordObject, EnableDebugLogging, TutorialException);
-	} else
+	if (this->GetWorld()->GetNetMode() != NM_DedicatedServer)
 	{
-		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("This game language is not currently supported by the Discord Rich Presence mod: %s"), *GameLanguage);
+		// Thanks to SirDigby for helping me with this
 
-		DiscordObject->SetLargeImage("satisfactory_logo");
-		DiscordObject->SetLargeImageText("Satisfactory");
-		DiscordObject->SetSmallImage("");
-		DiscordObject->SetSmallImageText("");
+		//UCLASS(BlueprintType)
+		//class FACTORYGAME_API UFGLocalPlayer : public ULocalPlayer
+		//{
+		//	GENERATED_BODY()
+		//
+		//	friend class AReporterSubsystem;
+
+		// IF THIS ERRORS IN NEWER VERSIONS, ADD 'friend class AReporterSubsystem;' TO THE AREA ABOVE ON FGLocalPlayer.h
+		FPlayerPresenceState pState;
+		Cast<UFGLocalPlayer>(this->GetWorld()->GetGameInstance()->GetFirstLocalPlayerController()->GetLocalPlayer())->GetPresenceState(pState);
+		const FString pString = pState.mPresenceString;
+
+		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("%s"),*pString);
+
+		FString TierSplitOut;
+
+		pString.Split(TEXT(":"), &TierString, &TierSplitOut);
+
+		FString DetailsSplitOut;
+
+		TierSplitOut.Split(TEXT("in"), &DetailsString, &DetailsSplitOut, ESearchCase::IgnoreCase, ESearchDir::FromEnd);
+
+		FString StateSplitOutDISCARD;
+
+		DetailsSplitOut.Split(TEXT("."), &StateString, &StateSplitOutDISCARD, ESearchCase::IgnoreCase, ESearchDir::FromEnd);
+
+		bool TutorialException = false;
+
+		/* BUG: THIS CHECK HAS BEEN REMOVED DUE TO AN ISSUE WITH THE VANILLA LANGUAGE HANDLER. FOR MORE INFO, SEE https://discord.com/channels/555424930502541343/862002356626128907/1224404299560521879
+		WILL REIMPLEMENT LATER, ONCE CSS FIXES IT ON THEIR END */
+
+		//if(GameLanguage == "en-US-POSIX" || GameLanguage == "en-CA" || GameLanguage == "en-GB")
+		//{
+			ULangEnglish::InterpretEnglish(StateString, TierString, pString, DiscordObject, EnableDebugLogging, TutorialException);
+		//}
+		//else
+		//{
+		//	UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("This language is not currently supported by the Discord Rich Presence mod: %s"), *GameLanguage);
+//
+		//	DiscordObject->SetLargeImage("satisfactory_logo");
+		//	DiscordObject->SetLargeImageText("Satisfactory");
+		//	DiscordObject->SetSmallImage("");
+		//	DiscordObject->SetSmallImageText("");
+		//}
+
+		// If we are a client, skip this step
+		if(this->GetWorld()->GetNetMode() != NM_Client)
+		{
+			// Get Player Count
+			NumPlayersInSession = UGameplayStatics::GetGameMode(GetWorld())->GetNumPlayers();
+		}
+
+		// Add a catch for if the player is currently in the tutorial phase
+		if (TutorialException)
+		{
+			pString.Split(TEXT("."), &DetailsString, &StateString);
+		}
+		else if(IsDeveloper)
+		{
+			DiscordObject->SetState("ficsit.app/mod/FG_DiscordRP");
+
+			DiscordObject->SetDetails("Developing this mod");
+		}
+		else
+		{
+			DiscordObject->SetState(StateString);
+
+			DiscordObject->SetDetails(DetailsString);
+		}
+
+		DiscordObject->SetPartySize(NumPlayersInSession);
+
+		DiscordObject->SetPartyMax(MaxPlayers);
 	}
-
-	// Get Player Count
-	NumPlayersInSession = UGameplayStatics::GetGameMode(GetWorld())->GetNumPlayers();
-
-	// Add a catch for if the player is currently in the tutorial phase
-	if (TutorialException)
-	{
-		pString.Split(TEXT("."), &DetailsString, &StateString);
-	}
-	else if(IsDeveloper)
-	{
-		DiscordObject->SetState("ficsit.app/mod/FG_DiscordRP");
-
-		DiscordObject->SetDetails("Developing this mod");
-	}
-	else
-	{
-		DiscordObject->SetState(StateString);
-
-		DiscordObject->SetDetails(DetailsString);
-	}
-
-	DiscordObject->SetPartySize(NumPlayersInSession);
-
-	DiscordObject->SetPartyMax(MaxPlayers);
 }
