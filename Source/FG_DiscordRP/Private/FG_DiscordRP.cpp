@@ -18,5 +18,5 @@ void FFG_DiscordRPModule::ShutdownModule()
 DEFINE_LOG_CATEGORY(LogFG_DISCORDRP);
 
 #undef LOCTEXT_NAMESPACE
-	
+
 IMPLEMENT_MODULE(FFG_DiscordRPModule, FG_DiscordRP)

@@ -15,6 +15,7 @@
 #include "GameFramework/GameSession.h"
 #include "ModLoading/ModLoadingLibrary.h"
 #include "activity_manager.h"
+#include "Online/Auth.h"
 
 AReporterSubsystem::AReporterSubsystem()
 {
@@ -31,11 +32,11 @@ AReporterSubsystem::AReporterSubsystem()
 
 	// Initialize variables from config
 	{
-	#if WITH_EDITOR
-	UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Shipping env not detected, avoiding crash"));
-	#else
+#if WITH_EDITOR
+		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Shipping env not detected, avoiding crash"));
+#else
 	myConfig = FDRP_ConfigStruct::GetActiveConfig(GetWorld());
-	#endif
+#endif
 	}
 
 	EnableDebugLogging = myConfig.debug_logging;
@@ -54,13 +55,14 @@ void AReporterSubsystem::BeginPlay()
 
 	const UGameInstance* GameInstance = GetGameInstance();
 
-	UModLoadingLibrary *ModLoadingLibrary = GameInstance->GetSubsystem<UModLoadingLibrary>();
+	UModLoadingLibrary* ModLoadingLibrary = GameInstance->GetSubsystem<UModLoadingLibrary>();
 
 	ModLoadingLibrary->GetLoadedModInfo("FG_DiscordRP", ModInfo);
 
 	// Log the name and version of the mod
 	UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("%s"), *ModInfo.FriendlyName.Append(", " + ModInfo.Version.ToString()));
 	UE_LOG(LogFG_DISCORDRP, Display, TEXT("Build Date: %s %s"), ANSI_TO_TCHAR(__DATE__), ANSI_TO_TCHAR(__TIME__));
+	// Because I'm lazy, just check the meaning of the net mode integer here: https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Plugins/GameplayInsights/FWorldInfo/ENetMode?application_version=5.3
 	UE_LOG(LogFG_DISCORDRP, Display, TEXT("Enviroment: %d"), this->GetWorld()->GetNetMode());
 
 	// Get the language for the interpreter to use later
@@ -71,7 +73,7 @@ void AReporterSubsystem::BeginPlay()
 	DiscordObject = UDiscordObject::GetDiscordObject();
 
 	// Check if our DiscordObject is valid or not before continuing
-	if(IsValid(DiscordObject))
+	if (IsValid(DiscordObject))
 	{
 		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Discord Object is valid."));
 	}
@@ -81,15 +83,16 @@ void AReporterSubsystem::BeginPlay()
 	}
 
 	// If we are on a dedicated server, skip this step
-	if(this->GetWorld()->GetNetMode() != NM_DedicatedServer && this->GetWorld()->GetNetMode() != NM_Client)
+	if (this->GetWorld()->GetNetMode() != NM_DedicatedServer && this->GetWorld()->GetNetMode() != NM_Client)
 	{
 		// Set the session type to friends only
-		const AFGPlayerController* PlayerController = Cast<AFGPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+		const AFGPlayerController* PlayerController = Cast<AFGPlayerController>(
+			UGameplayStatics::GetPlayerController(GetWorld(), 0));
 
 		const APlayerState* PlayerState = PlayerController->GetPlayerState<APlayerState>();
 		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("%s"), *PlayerState->GetPlayerName().Append(" has joined the server."));
 
-		if(AFGAdminInterface* AdminInterface = PlayerController->GetAdminInterface())
+		if (AFGAdminInterface* AdminInterface = PlayerController->GetAdminInterface())
 		{
 			//UCLASS(notplaceable)
 			//class FACTORYGAME_API AFGAdminInterface : public AInfo
@@ -114,7 +117,8 @@ void AReporterSubsystem::BeginPlay()
 		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Dedicated Server detected, skipping session setup."));
 	}
 
-	GetWorldTimerManager().SetTimer(MemberTimerHandle, this, &AReporterSubsystem::ProcessPresenceString, UpdateInterval, true, UpdateInterval);
+	GetWorldTimerManager().SetTimer(MemberTimerHandle, this, &AReporterSubsystem::ProcessPresenceString, UpdateInterval,
+	                                true, UpdateInterval);
 	// End Subsystem Initialization
 }
 
@@ -141,10 +145,11 @@ void AReporterSubsystem::ProcessPresenceString()
 
 		// IF THIS ERRORS IN NEWER VERSIONS, ADD 'friend class AReporterSubsystem;' TO THE AREA ABOVE ON FGLocalPlayer.h
 		FPlayerPresenceState pState;
-		Cast<UFGLocalPlayer>(this->GetWorld()->GetGameInstance()->GetFirstLocalPlayerController()->GetLocalPlayer())->GetPresenceState(pState);
+		Cast<UFGLocalPlayer>(this->GetWorld()->GetGameInstance()->GetFirstLocalPlayerController()->GetLocalPlayer())->
+			GetPresenceState(pState);
 		const FString pString = pState.mPresenceString;
 
-		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("%s"),*pString);
+		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Current presence string:%s"), *pString);
 
 		FString TierSplitOut;
 
@@ -165,12 +170,12 @@ void AReporterSubsystem::ProcessPresenceString()
 
 		//if(GameLanguage == "en-US-POSIX" || GameLanguage == "en-CA" || GameLanguage == "en-GB")
 		//{
-			ULangEnglish::InterpretEnglish(StateString, TierString, pString, DiscordObject, EnableDebugLogging, TutorialException);
+		ULangEnglish::InterpretEnglish(StateString, TierString, pString, DiscordObject, EnableDebugLogging, TutorialException);
 		//}
 		//else
 		//{
 		//	UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("This language is not currently supported by the Discord Rich Presence mod: %s"), *GameLanguage);
-//
+		//
 		//	DiscordObject->SetLargeImage("satisfactory_logo");
 		//	DiscordObject->SetLargeImageText("Satisfactory");
 		//	DiscordObject->SetSmallImage("");
@@ -178,7 +183,7 @@ void AReporterSubsystem::ProcessPresenceString()
 		//}
 
 		// If we are a client, skip this step
-		if(this->GetWorld()->GetNetMode() != NM_Client)
+		if (this->GetWorld()->GetNetMode() != NM_Client)
 		{
 			// Get Player Count
 			NumPlayersInSession = UGameplayStatics::GetGameMode(GetWorld())->GetNumPlayers();
@@ -189,7 +194,7 @@ void AReporterSubsystem::ProcessPresenceString()
 		{
 			pString.Split(TEXT("."), &DetailsString, &StateString);
 		}
-		else if(IsDeveloper)
+		else if (IsDeveloper)
 		{
 			DiscordObject->SetState("ficsit.app/mod/FG_DiscordRP");
 
@@ -205,5 +210,13 @@ void AReporterSubsystem::ProcessPresenceString()
 		DiscordObject->SetPartySize(NumPlayersInSession);
 
 		DiscordObject->SetPartyMax(MaxPlayers);
+
+		// EXPERIMENTAL: Update EOS presence data.
+
+		// TSharedPtr<FOnlineUserPresence> presence;
+		//
+		// TSharedRef<FUniqueNetId> netID = this->GetWorld()->GetGameInstance()->GetFirstLocalPlayerController()->GetPlayerState<AFGPlayerController>()
+		//
+		// FEOSAccountHelpers::AddIdentificationToPresence(this->GetWorld(), netID, presence);
 	}
 }
