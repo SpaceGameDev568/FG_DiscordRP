@@ -15,17 +15,14 @@ class FG_DISCORDRP_API AReporterSubsystem : public AModSubsystem
 	GENERATED_BODY()
 
 public:
-
 	AReporterSubsystem();
 
 protected:
-
 	virtual void BeginPlay() override;
 
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
 public:
-
 	// Pointer to a DiscordObject, used for interacting with the Discord API
 	UDiscordObject* DiscordObject;
 
@@ -67,5 +64,4 @@ public:
 
 	UFUNCTION()
 	void ProcessPresenceString();
-
 };

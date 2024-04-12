@@ -4,157 +4,160 @@
 #include "FG_DiscordRP.h"
 #include "DiscordObject.h"
 
-void ULangEnglish::InterpretEnglish(FString InStateString, FString InTierString, FString InPresenceString, UDiscordObject* DiscordObject, bool EnableDebugLogging, bool &TutorialException)
+void ULangEnglish::InterpretEnglish(FString InStateString, FString InTierString, FString InPresenceString,
+                                    UDiscordObject* DiscordObject, bool EnableDebugLogging, bool& TutorialException)
 {
 	// Add small image with tier info
 	DiscordObject->SetSmallImage("satisfactory_logo");
 	DiscordObject->SetSmallImageText(InTierString);
-	UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("%s"),*InTierString);
+	UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Current tier: %s"), *InTierString);
 
 	// Parse Biome String
 
 	// Abyss Cliffs
-	if(InStateString.Contains("Abyss Cliffs") == 1)
+	if (InStateString.Contains("Abyss Cliffs") == 1)
 	{
-			UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Detected Biome: Abyss Cliffs"));
+		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Current biome: Abyss Cliffs"));
 
-	DiscordObject->SetLargeImage("abyss_cliffs");
-	DiscordObject->SetLargeImageText("Abyss Cliffs");
+		DiscordObject->SetLargeImage("abyss_cliffs");
+		DiscordObject->SetLargeImageText("Abyss Cliffs");
 	} // Blue Crater
-	else if(InStateString.Contains("Blue Crater") == 1)
+	else if (InStateString.Contains("Blue Crater") == 1)
 	{
-			UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Detected Biome: Blue Crater"));
+		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Current biome: Blue Crater"));
 
 		DiscordObject->SetLargeImage("blue_crater");
 		DiscordObject->SetLargeImageText("Blue Crater");
 	} // Crater Lakes
-	else if(InStateString.Contains("Crater Lakes") == 1)
+	else if (InStateString.Contains("Crater Lakes") == 1)
 	{
-		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Detected Biome: Crater Lakes"));
+		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Current biome: Crater Lakes"));
 
 		DiscordObject->SetLargeImage("crater_lakes");
 		DiscordObject->SetLargeImageText("Crater Lakes");
 	} // Dune Desert
-	else if(InStateString.Contains("Dune Desert") == 1)
+	else if (InStateString.Contains("Dune Desert") == 1)
 	{
-		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Detected Biome: Dune Desert"));
+		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Current biome: Dune Desert"));
 
 		DiscordObject->SetLargeImage("dune_desert");
 		DiscordObject->SetLargeImageText("Dune Desert");
 	} // Grass Fields
-	else if(InStateString.Contains("Grass Fields") == 1)
+	else if (InStateString.Contains("Grass Fields") == 1)
 	{
-		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Detected Biome: Grass Fields"));
+		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Current biome: Grass Fields"));
 
 		DiscordObject->SetLargeImage("grass_fields");
 		DiscordObject->SetLargeImageText("Grass Fields");
 	} // Jungle Spires
-	else if(InStateString.Contains("Jungle Spires") == 1)
+	else if (InStateString.Contains("Jungle Spires") == 1)
 	{
-		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Detected Biome: Jungle Spires"));
+		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Current biome: Jungle Spires"));
 
 		DiscordObject->SetLargeImage("jungle_spires");
 		DiscordObject->SetLargeImageText("Jungle Spires");
 	} // Lake Forest
-	else if(InStateString.Contains("Lake Forest") == 1)
+	else if (InStateString.Contains("Lake Forest") == 1)
 	{
-		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Detected Biome: Lake Forest"));
+		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Current biome: Lake Forest"));
 
 		DiscordObject->SetLargeImage("lake_forest");
 		DiscordObject->SetLargeImageText("Lake Forest");
 	} // Maze Canyon
-	else if(InStateString.Contains("Maze Canyon") == 1)
+	else if (InStateString.Contains("Maze Canyon") == 1)
 	{
-		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Detected Biome: Maze Canyon"));
+		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Current biome: Maze Canyon"));
 
 		DiscordObject->SetLargeImage("maze_canyon");
 		DiscordObject->SetLargeImageText("Maze Canyon");
 	} // No Man's Land
-	else if(InStateString.Contains("No Man's Land") == 1)
+	else if (InStateString.Contains("No Man's Land") == 1)
 	{
-		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Detected Biome: No Man's Land"));
+		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Current biome: No Man's Land"));
 
 		DiscordObject->SetLargeImage("no_mans_land");
 		DiscordObject->SetLargeImageText("No Man's Land");
 	} // Northern Forest
-	else if(InStateString.Contains("Northern Forest") == 1)
+	else if (InStateString.Contains("Northern Forest") == 1)
 	{
-		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Detected Biome: Northern Forest"));
+		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Current biome: Northern Forest"));
 
 		DiscordObject->SetLargeImage("northern_forest");
 		DiscordObject->SetLargeImageText("Northern Forest");
 	} // Red Bamboo Fields
-	else if(InStateString.Contains("Red Bamboo Fields") == 1)
+	else if (InStateString.Contains("Red Bamboo Fields") == 1)
 	{
-		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Detected Biome: Red Bamboo Fields"));
+		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Current biome: Red Bamboo Fields"));
 
 		DiscordObject->SetLargeImage("red_bamboo_fields");
 		DiscordObject->SetLargeImageText("Red Bamboo Fields");
 	} // Red Jungle
-	else if(InStateString.Contains("Red Jungle") == 1)
+	else if (InStateString.Contains("Red Jungle") == 1)
 	{
-		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Detected Biome: Red Jungle"));
+		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Current biome: Red Jungle"));
 
 		DiscordObject->SetLargeImage("red_jungle");
 		DiscordObject->SetLargeImageText("Red Jungle");
 	} // Rocky Desert
-	else if(InStateString.Contains("Rocky Desert") == 1)
+	else if (InStateString.Contains("Rocky Desert") == 1)
 	{
-		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Detected Biome: Rocky Desert"));
+		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Current biome: Rocky Desert"));
 
 		DiscordObject->SetLargeImage("rocky_desert");
 		DiscordObject->SetLargeImageText("Rocky Desert");
 	} // Southern Forest
-	else if(InStateString.Contains("Southern Forest") == 1)
+	else if (InStateString.Contains("Southern Forest") == 1)
 	{
-		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Detected Biome: Southern Forest"));
+		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Current biome: Southern Forest"));
 
 		DiscordObject->SetLargeImage("southern_forest");
 		DiscordObject->SetLargeImageText("Southern Forest");
 	} // Spire Coast
-	else if(InStateString.Contains("Spire Coast") == 1)
+	else if (InStateString.Contains("Spire Coast") == 1)
 	{
-		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Detected Biome: Spire Coast"));
+		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Current biome: Spire Coast"));
 
 		DiscordObject->SetLargeImage("spire_coast");
 		DiscordObject->SetLargeImageText("Spire Coast");
 	} // Swamp
-	else if(InStateString.Contains("Swamp") == 1)
+	else if (InStateString.Contains("Swamp") == 1)
 	{
-		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Detected Biome: Swamp"));
+		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Current biome: Swamp"));
 
 		DiscordObject->SetLargeImage("swamp");
 		DiscordObject->SetLargeImageText("Swamp");
 	} // Titan Forest
-	else if(InStateString.Contains("Titan Forest") == 1)
+	else if (InStateString.Contains("Titan Forest") == 1)
 	{
-		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Detected Biome: Titan Forest"));
+		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Current biome: Titan Forest"));
 
 		DiscordObject->SetLargeImage("titan_forest");
 		DiscordObject->SetLargeImageText("Titan Forest");
 	} // Western Dune Forest
-	else if(InStateString.Contains("Western Dune Forest") == 1)
+	else if (InStateString.Contains("Western Dune Forest") == 1)
 	{
-		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Detected Biome: Western Dune Forest"));
+		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Current biome: Western Dune Forest"));
 
 		DiscordObject->SetLargeImage("western_dune_forest");
 		DiscordObject->SetLargeImageText("Western Dune Forest");
 	} // Desert Canyon
-	else if(InStateString.Contains("Desert Canyon") == 1)
+	else if (InStateString.Contains("Desert Canyon") == 1)
 	{
-		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Detected Biome: Desert Canyon"));
+		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Current biome: Desert Canyon"));
 
 		DiscordObject->SetLargeImage("desert_canyon");
 		DiscordObject->SetLargeImageText("Desert Canyon");
 	} // somewhere
-	else if(InStateString.Contains("somewhere") == 1)
+	else if (InStateString.Contains("somewhere") == 1)
 	{
-		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Detected Biome: somewhere. This means that the game is loading OR something went terribly wrong."));
+		UE_LOG(LogFG_DISCORDRP, Verbose,
+		       TEXT("Current biome: somewhere. This means that the game is loading OR something went terribly wrong."
+		       ));
 
 		DiscordObject->SetLargeImage("ssd_logo");
 		DiscordObject->SetLargeImageText("Error Processing Biome String");
 	} // Did we find a biome or do we need to put in the fallback text?
-	else if(InPresenceString.Contains(TEXT("Just landed on the alien planet.")))
+	else if (InPresenceString.Contains(TEXT("Just landed on the alien planet.")))
 	{
 		TutorialException = true;
 	}
@@ -166,4 +169,3 @@ void ULangEnglish::InterpretEnglish(FString InStateString, FString InTierString,
 		DiscordObject->SetLargeImageText("Satisfactory");
 	}
 }
-
