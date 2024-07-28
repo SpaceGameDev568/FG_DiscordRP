@@ -32,11 +32,11 @@ AReporterSubsystem::AReporterSubsystem()
 
 	// Initialize variables from config
 	{
-#if WITH_EDITOR
-		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Shipping env not detected, avoiding crash"));
-#else
-	myConfig = FDRP_ConfigStruct::GetActiveConfig(GetWorld());
-#endif
+	#if WITH_EDITOR
+			UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Shipping env not detected, avoiding crash"));
+	#else
+		myConfig = FDRP_ConfigStruct::GetActiveConfig(GetWorld());
+	#endif
 	}
 
 	EnableDebugLogging = myConfig.debug_logging;
@@ -59,7 +59,7 @@ void AReporterSubsystem::BeginPlay()
 
 	ModLoadingLibrary->GetLoadedModInfo("FG_DiscordRP", ModInfo);
 
-	// Log the name and version of the mod
+	// Log the name, version, and build date of the mod
 	UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("%s"), *ModInfo.FriendlyName.Append(", " + ModInfo.Version.ToString()));
 	UE_LOG(LogFG_DISCORDRP, Display, TEXT("Build Date: %s %s"), ANSI_TO_TCHAR(__DATE__), ANSI_TO_TCHAR(__TIME__));
 	// Because I'm lazy, just check the meaning of the net mode integer here: https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Plugins/GameplayInsights/FWorldInfo/ENetMode?application_version=5.3
