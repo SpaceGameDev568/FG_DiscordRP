@@ -11,28 +11,21 @@ public class FG_DiscordRP : ModuleRules
 		PublicIncludePaths.AddRange(
 			new[]
 			{
-				// ... add public include paths required here ...
 				"DiscordSDK"
+				// ... add public include paths required here ...
 			}
 		);
-
-
-		PrivateIncludePaths.AddRange(
-			new string[]
-			{
-				// ... add other private include paths required here ...
-			}
-		);
-
 
 		PublicDependencyModuleNames.AddRange(
 			new[]
 			{
-				"Core", "DiscordUE4", "FactoryGame", "SML"
+				"Core",
+				"DiscordUE4",
+				"FactoryGame",
+				"SML"
 				// ... add other public dependencies that you statically link with here ...
 			}
 		);
-
 
 		PrivateDependencyModuleNames.AddRange(
 			new[]
@@ -42,14 +35,6 @@ public class FG_DiscordRP : ModuleRules
 				"Slate",
 				"SlateCore"
 				// ... add private dependencies that you statically link with here ...	
-			}
-		);
-
-
-		DynamicallyLoadedModuleNames.AddRange(
-			new string[]
-			{
-				// ... add any modules that your module loads dynamically here ...
 			}
 		);
 	}
