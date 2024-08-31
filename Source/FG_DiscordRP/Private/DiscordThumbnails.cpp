@@ -1,11 +1,10 @@
 // Copyright 2023 - 2024 Jesse Hodgson. All Rights Reserved.
 
-#include "Languages/LangEnglish.h"
+#include "DiscordThumbnails.h"
 #include "FG_DiscordRP.h"
 #include "DiscordObject.h"
 
-void ULangEnglish::InterpretEnglish(FString InStateString, FString InTierString, FString InPresenceString,
-                                    UDiscordObject* DiscordObject, bool EnableDebugLogging, bool& TutorialException)
+void UDiscordThumbnails::UpdateThumbnails(FString InStateString, FString InTierString, FString InPresenceString, UDiscordObject* DiscordObject, bool& bTutorialException)
 {
 	// Add small image with tier info
 	DiscordObject->SetSmallImage("satisfactory_logo");
@@ -150,16 +149,14 @@ void ULangEnglish::InterpretEnglish(FString InStateString, FString InTierString,
 	} // somewhere
 	else if (InStateString.Contains("somewhere") == 1)
 	{
-		UE_LOG(LogFG_DISCORDRP, Verbose,
-		       TEXT("Current biome: somewhere. This means that the game is loading OR something went terribly wrong."
-		       ));
+		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Current biome: somewhere. This means that the game is loading or something went terribly wrong."));
 
 		DiscordObject->SetLargeImage("ssd_logo");
 		DiscordObject->SetLargeImageText("Error Processing Biome String");
 	} // Did we find a biome or do we need to put in the fallback text?
 	else if (InPresenceString.Contains(TEXT("Just landed on the alien planet.")))
 	{
-		TutorialException = true;
+		bTutorialException = true;
 	}
 	else
 	{

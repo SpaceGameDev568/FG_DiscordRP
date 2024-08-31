@@ -5,19 +5,18 @@
 #include "CoreMinimal.h"
 #include "DiscordObject.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
-#include "LangEnglish.generated.h"
+#include "DiscordThumbnails.generated.h"
 
 
 // Info about file type: https://docs.unrealengine.com/5.3/en-US/blueprint-function-libraries-in-unreal-engine/
 
 UCLASS()
-class FG_DISCORDRP_API ULangEnglish : public UBlueprintFunctionLibrary
+class FG_DISCORDRP_API UDiscordThumbnails : public UBlueprintFunctionLibrary
 {
 	GENERATED_BODY()
 
-	friend class AReporterSubsystem;
+public:
 
 	UFUNCTION(BlueprintCallable, Category = "Discord")
-	static void InterpretEnglish(FString InStateString, FString InTierString, FString InPresenceString,
-	                             UDiscordObject* DiscordObject, bool EnableDebugLogging, bool& TutorialException);
+	static void UpdateThumbnails(FString InStateString, FString InTierString, FString InPresenceString, UDiscordObject* DiscordObject, bool& bTutorialException);
 };
