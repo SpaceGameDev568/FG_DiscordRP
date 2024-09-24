@@ -15,6 +15,7 @@
 #include "GameFramework/GameSession.h"
 #include "ModLoading/ModLoadingLibrary.h"
 #include "activity_manager.h"
+#include "Kismet/GameplayStatics.h"
 
 AReporterSubsystem::AReporterSubsystem()
 {
@@ -85,10 +86,10 @@ void AReporterSubsystem::BeginPlay()
 		MaxPlayers = AdminInterface->GetGameSession()->MaxPlayers;
 
 		// Set our session visibility which affects whether we can retrieve the data we want
-		AdminInterface->SetSessionVisibility(ESessionVisibility::SV_FriendsOnly);
+		// AdminInterface->SetSessionVisibility(ESessionVisibility::SV_FriendsOnly);
 	}
 
-	GetWorldTimerManager().SetTimer(MemberTimerHandle, this, &AReporterSubsystem::ProcessPresenceString, UpdateInterval,true, UpdateInterval);
+	GetWorldTimerManager().SetTimer(MemberTimerHandle, this, &AReporterSubsystem::ProcessPresenceString, 5.0f,true, 5.0f);
 }
 
 // End the subsystem when leaving the world to prevent crashing
@@ -102,6 +103,8 @@ void AReporterSubsystem::EndPlay(const EEndPlayReason::Type EndPlayReason)
 // Get and process the local player presence string
 void AReporterSubsystem::ProcessPresenceString()
 {
+	UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Beginning processing..."));
+
 	// Thanks to SirDigby for helping me with this
 
 	//UCLASS(BlueprintType)

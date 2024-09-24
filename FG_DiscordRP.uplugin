@@ -1,8 +1,8 @@
 {
 	"FileVersion": 3,
-	"Version": 1,
-	"VersionName": "1.2.12",
-	"SemVersion": "1.2.12",
+	"Version": 2,
+	"VersionName": "2.0.0",
+	"SemVersion": "2.0.0",
 	"FriendlyName": "Discord Rich Presence",
 	"Description": "A Discord Rich Presence mod for Satisfactory.",
 	"Category": "Modding",
@@ -40,7 +40,7 @@
 	"Plugins": [
 		{
 			"Name": "SML",
-			"SemVersion": "^3.7.0",
+			"SemVersion": "^3.8.0-dev",
 			"Enabled": true,
 			"BasePlugin": false
 		},
@@ -48,8 +48,9 @@
 			"Name": "ModUpdateNotifier",
 			"Enabled": true,
 			"Optional": true,
-			"SemVersion": "^1.0.3"
+			"SemVersion": "^2.0.0"
 		}
 	],
-	"AcceptsAnyRemoteVersion": true
+	"AcceptsAnyRemoteVersion": true,
+	"GameVersion": ">=365306"
 }
