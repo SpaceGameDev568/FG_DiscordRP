@@ -12,7 +12,7 @@ body:
       label: Operating System
       description: What operating system are you using?
       options:
-        - Winblows 10/11
+        - Windows 10/11
         - Linux
       default: 0
     validations:
@@ -27,7 +27,7 @@ body:
         - P2P Host (You are hosting a game locally and your friends are joining you)
         - P2P Client (You are connecting to your friend's game)
         - Client (You are connecting to a dedicated server)
-        - Server (You are either self hosting one or pay to have one hosted in the cloud with a service like ShockByte)
+        - Server (You are either self hosting one or pay to have one hosted in the cloud)
       default: 0
     validations:
       required: true
@@ -37,7 +37,7 @@ body:
       label: Game Version
       description: What version of Satisfactory are you using?
       options:
-        - Early Access
+        - Stable
         - Experimental
       default: 0
     validations:
@@ -47,7 +47,7 @@ body:
     attributes:
       label: SML Version
       description: What version of SML are you using?
-      placeholder: v3.7.0
+      placeholder: v3.8.0
     validations:
       required: true
   - type: input
@@ -55,7 +55,7 @@ body:
     attributes:
       label: Mod Version
       description: What version of the mod are you using?
-      placeholder: v1.1.8
+      placeholder: v2.0.0
     validations:
       required: true
       
@@ -79,15 +79,7 @@ body:
     id: attachments
     attributes:
       label: Attachments
-      description: If applicable, please attach screenshots or generated debug information here. To take a screenshot on Winblows 10/11, you can press `Win + Shift + S` and select the area you want to capture, then click this field on your GitHub report and press `Ctrl + V` to paste it in. To generate debug information, open SMM and click the "Settings" button -> Debug -> Generate Debug Info, and attach the `.zip` file here
+      description: If applicable, please attach screenshots or generated debug information here. To take a screenshot on Windows 10/11, you can press `Win + Shift + S` and select the area you want to capture, then click this field on your GitHub report and press `Ctrl + V` to paste it in. To generate debug information, open SMM and click the "Settings" button -> Debug -> Generate Debug Info, and attach the `.zip` file here
       placeholder: SMM-Debug-1-14-2024.zip, Screenshot-102957.jpg
     validations:
-      required: false     
-  - type: checkboxes
-    id: terms
-    attributes:
-      label: Contact agreement
-      description: By submitting this issue, you agree to allow us to contact you for more information regarding this bug if necessary.
-      options:
-        - label: I agree to allow the developer to contact me for more information regarding this bug if necessary.
-          required: true
+      required: false

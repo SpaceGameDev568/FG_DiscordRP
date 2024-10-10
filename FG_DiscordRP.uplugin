@@ -40,7 +40,7 @@
 	"Plugins": [
 		{
 			"Name": "SML",
-			"SemVersion": "^3.8.0-dev",
+			"SemVersion": "^3.8.0",
 			"Enabled": true,
 			"BasePlugin": false
 		},
