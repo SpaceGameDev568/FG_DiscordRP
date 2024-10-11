@@ -69,7 +69,7 @@ void AReporterSubsystem::BeginPlay()
 	const AFGPlayerController* PlayerController = Cast<AFGPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
 	const APlayerState* PlayerState = PlayerController->GetPlayerState<APlayerState>();
 
-	UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("%s"), *PlayerState->GetPlayerName().Append(" has joined the game."));
+	// UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("%s"), *PlayerState->GetPlayerName().Append(" has joined the game."));
 
 	if (AFGAdminInterface* AdminInterface = PlayerController->GetAdminInterface())
 	{
@@ -83,7 +83,7 @@ void AReporterSubsystem::BeginPlay()
 		// IF THIS ERRORS IN NEWER VERSIONS, ADD 'friend class AReporterSubsystem;' TO THE AREA ABOVE ON FGAdminInterface.h
 
 		// Get the amount of players allowed in the game session
-		MaxPlayers = AdminInterface->GetGameSession()->MaxPlayers;
+		//MaxPlayers = AdminInterface->GetGameSession()->MaxPlayers;
 
 		// Set our session visibility which affects whether we can retrieve the data we want
 		// AdminInterface->SetSessionVisibility(ESessionVisibility::SV_FriendsOnly);
@@ -131,14 +131,14 @@ void AReporterSubsystem::ProcessPresenceString()
 	OutDetails.Split(TEXT("."), &DiscordState, &OutState, ESearchCase::IgnoreCase, ESearchDir::FromEnd);
 
 	// If we are a client, skip this step
-	if (this->GetWorld()->GetNetMode() != NM_Client)
-	{
-		// Get Player Count
-		NumPlayersInSession = UGameplayStatics::GetGameMode(GetWorld())->GetNumPlayers();
-	}
+	// if (this->GetWorld()->GetNetMode() != NM_Client)
+	// {
+	// 	  // Get Player Count
+	// 	  NumPlayersInSession = UGameplayStatics::GetGameMode(GetWorld())->GetNumPlayers();
+	// }
 
-	DiscordObject->SetPartySize(NumPlayersInSession);
-	DiscordObject->SetPartyMax(MaxPlayers);
+	// DiscordObject->SetPartySize(NumPlayersInSession);
+	// DiscordObject->SetPartyMax(MaxPlayers);
 
 	// Add a catch for if the player is currently in the tutorial phase
 	if (bTutorialException)
