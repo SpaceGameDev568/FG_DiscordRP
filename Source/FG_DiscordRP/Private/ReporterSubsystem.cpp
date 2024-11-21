@@ -47,6 +47,11 @@ void AReporterSubsystem::BeginPlay()
 {
 	Super::BeginPlay();
 
+	if (this->GetWorld()->GetNetMode() != NM_DedicatedServer)
+	{
+		this->Destroy();
+	}
+
 	UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Loaded FG_DRP Reporter Subsystem."));
 
 	FModInfo ModInfo;
