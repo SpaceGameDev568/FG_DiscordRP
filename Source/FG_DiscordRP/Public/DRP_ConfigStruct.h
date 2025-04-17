@@ -15,6 +15,15 @@ public:
     UPROPERTY(BlueprintReadWrite)
     bool bAllowDebugLogging{};
 
+    UPROPERTY(BlueprintReadWrite)
+    FString DiscordAccessToken{};
+
+    UPROPERTY(BlueprintReadWrite)
+    FString DiscordRefreshToken{};
+
+    UPROPERTY(BlueprintReadWrite)
+    int32 DiscordRefreshTokenType{};
+
     /* Retrieves active configuration value and returns object of this struct containing it */
     static FDRP_ConfigStruct GetActiveConfig(UObject* WorldContext) {
         FDRP_ConfigStruct ConfigStruct{};

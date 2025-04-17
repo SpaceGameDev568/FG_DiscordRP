@@ -1,14 +1,14 @@
 {
 	"FileVersion": 3,
 	"Version": 2,
-	"VersionName": "2.0.4",
-	"SemVersion": "2.0.4",
+	"VersionName": "2.1.0",
+	"SemVersion": "2.1.0",
 	"FriendlyName": "Discord Rich Presence",
-	"Description": "A Discord Rich Presence mod for Satisfactory.",
+	"Description": "A Discord Rich Presence implementation for Satisfactory.",
 	"Category": "Modding",
 	"CreatedBy": "SpaceGameDev",
 	"CreatedByURL": "https://spacegamedev.com",
-	"DocsURL": "https://docs.spacegamedev.com/discord-rich-presence",
+	"DocsURL": "https://docs.spacegamedev.com/modding/discord-rich-presence",
 	"MarketplaceURL": "https://ficsit.app/mod/FG_DiscordRP",
 	"SupportURL": "https://github.com/SpaceGameDev568/FG_DiscordRP/issues/new/choose",
 	"CanContainContent": true,
@@ -17,7 +17,7 @@
 	"Installed": false,
 	"Modules": [
 		{
-			"Name": "DiscordUE4",
+			"Name": "FG_DiscordRP",
 			"Type": "Runtime",
 			"LoadingPhase": "PreDefault",
 			"PlatformAllowList": [
@@ -27,9 +27,9 @@
 			]
 		},
 		{
-			"Name": "FG_DiscordRP",
+			"Name": "DiscordPartnerSDK",
 			"Type": "Runtime",
-			"LoadingPhase": "PreDefault",
+			"LoadingPhase": "Default",
 			"PlatformAllowList": [
 				"Win64",
 				"Mac",
@@ -40,16 +40,16 @@
 	"Plugins": [
 		{
 			"Name": "SML",
-			"SemVersion": "^3.9.1",
+			"SemVersion": "^3.10.0",
 			"Enabled": true
 		},
 		{
 			"Name": "ModUpdateNotifier",
 			"Enabled": true,
-			"SemVersion": "^2.2.1"
+			"SemVersion": "^2.3.4"
 		}
 	],
 	"AcceptsAnyRemoteVersion": true,
-	"GameVersion": ">=383729",
+	"GameVersion": ">=404994",
 	"RequiredOnRemote": false
 }

@@ -1,9 +1,10 @@
-// Copyright 2023 - 2024 Jesse Hodgson. All Rights Reserved.
+// Copyright 2023 - 2025 Jesse Hodgson
 
 #pragma once
 
 #include "CoreMinimal.h"
-#include "DiscordObject.h"
+#include "DiscordActions.h"
+#include "DiscordUnreal.h"
 #include "FGPlayerController.h"
 #include "Subsystem/ModSubsystem.h"
 #include "DRP_ConfigStruct.h"
@@ -18,7 +19,27 @@ public:
 	AReporterSubsystem();
 
 	UPROPERTY()
-	UDiscordObject* DiscordObject; // Pointer to a DiscordObject, used for interacting with the Discord API
+	UDiscordActivity* Activity;
+
+	UPROPERTY()
+	UDiscordActivityAssets* Assets;
+
+	UPROPERTY()
+	UDiscordActivityParty* Party;
+
+	UPROPERTY()
+	UDiscordLocalPlayerSubsystem* Discord;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<AActor> ActorClass;
+
+	//UPROPERTY()
+	//ADiscordActions* DiscordActions;
+
+	FString LargeImage;
+	FString LargeImageText;
+	FString SmallImage;
+	FString SmallImageText;
 
 	FString PlayerPresence; // The player's presence in the game
 
@@ -49,8 +70,16 @@ public:
 	UFUNCTION()
 	void ProcessPresenceString();
 
+	void OnRichPresenceUpdated(UDiscordClientResult* Result);
+
+	UFUNCTION()
+	void UpdateThumbnails(bool& bTutorialException);
+
 protected:
+
 	virtual void BeginPlay() override;
 
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+
+	void OnLogMessage(FString Message, EDiscordLoggingSeverity Severity);
 };

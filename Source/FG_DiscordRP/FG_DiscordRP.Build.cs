@@ -7,21 +7,23 @@ public class FG_DiscordRP : ModuleRules
 	public FG_DiscordRP(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
+		CppStandard = CppStandardVersion.Cpp20;
 
-		PublicIncludePaths.AddRange(
-			new[]
-			{
-				"DiscordSDK"
-				// ... add public include paths required here ...
-			}
-		);
+		// PublicIncludePaths.AddRange(
+		// 	new[]
+		// 	{
+		// 		// ... add public include paths required here ...
+		// 	}
+		// );
 
 		PublicDependencyModuleNames.AddRange(
 			new[]
 			{
 				"Core",
-				"DiscordUE4",
 				"FactoryGame",
+				"UMG",
+				"DiscordPartnerSDK",
+				"DiscordPartnerSDKLibrary",
 				"SML"
 				// ... add other public dependencies that you statically link with here ...
 			}
