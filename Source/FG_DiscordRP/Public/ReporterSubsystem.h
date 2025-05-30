@@ -27,6 +27,9 @@ public:
 	UPROPERTY()
 	UDiscordActivityParty* Party;
 
+	// UPROPERTY()
+	// UDiscordActivityButton* Button;
+
 	UPROPERTY()
 	UDiscordLocalPlayerSubsystem* Discord;
 

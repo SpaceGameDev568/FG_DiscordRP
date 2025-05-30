@@ -6,7 +6,6 @@
 #include "FGPlayerController.h"
 #include "FGLocalPlayer.h"
 #include "FGAdminInterface.h"
-#include "DiscordThumbnails.h"
 #include "GameFramework/GameMode.h"
 #include "DRP_ConfigStruct.h"
 #include "ModLoading/ModLoadingLibrary.h"
@@ -28,16 +27,22 @@ AReporterSubsystem::AReporterSubsystem()
 	DiscordApplicationID = "1082738646173614143";
 	//DiscordActions = nullptr;
 
+	Activity = nullptr;
+	Assets = nullptr;
+	Party = nullptr;
+	//Button = nullptr;
+	Discord = nullptr;
+
 	bAllowDebugLogging = ModConfig.bAllowDebugLogging;
 	UpdateInterval = ModConfig.UpdateInterval;
 
 	// Initialize variables from config, unless we are in the editor, as that would crash the engine
 	{
-	#if WITH_EDITOR
+#if WITH_EDITOR
 		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Shipping env not detected, avoiding crash"));
-	#else
+#else
 		ModConfig = FDRP_ConfigStruct::GetActiveConfig(GetWorld());
-	#endif
+#endif
 	}
 }
 
@@ -171,6 +176,10 @@ void AReporterSubsystem::ProcessPresenceString()
 	//Activity->SetParty(Party);
 
 	// PartyMax(MaxPlayers);
+
+	// Button->SetLabel("Get Mod");
+	// Button->SetUrl("https://ficsit.app/mod/FG_DiscordRP");
+
 
 	// Add a catch for if the player is currently in the tutorial phase
 	if (bTutorialException)
@@ -372,6 +381,9 @@ void AReporterSubsystem::UpdateThumbnails(bool& bTutorialException)
 
 	// Commit Assets to presence
 	Activity->SetAssets(Assets);
+
+	// Add custom buttons
+	// Activity->AddButton(Button);
 
 	// Commit Presence to client
 	Discord->Client->UpdateRichPresence(Activity, FDiscordClientUpdateRichPresenceCallback::CreateUObject(this, &AReporterSubsystem::OnRichPresenceUpdated));
