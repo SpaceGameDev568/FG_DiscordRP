@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "DiscordActions.h"
+#include "DiscordLocalPlayerSubsystem.h"
 #include "DiscordUnreal.h"
 #include "FGPlayerController.h"
 #include "Subsystem/ModSubsystem.h"
@@ -24,20 +24,20 @@ public:
 	UPROPERTY()
 	UDiscordActivityAssets* Assets;
 
-	UPROPERTY()
-	UDiscordActivityParty* Party;
+    // UPROPERTY()
+    // UDiscordActivityParty* Party;
 
-	// UPROPERTY()
-	// UDiscordActivityButton* Button;
+    UPROPERTY()
+    UDiscordActivityTimestamps* Timestamps;
+
+    UPROPERTY()
+    UDiscordActivityButton* Button;
 
 	UPROPERTY()
 	UDiscordLocalPlayerSubsystem* Discord;
 
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<AActor> ActorClass;
-
-	//UPROPERTY()
-	//ADiscordActions* DiscordActions;
 
 	FString LargeImage;
 	FString LargeImageText;
@@ -54,8 +54,6 @@ public:
 
 	FString GameLanguage; // The player's preferred language
 
-	FString DiscordApplicationID; // The Discord application ID: https://discord.com/developers/applications/1082738646173614143/information
-
 	FPlayerPresenceState PresenceState; // The player's presence state in the game
 
 	FDRP_ConfigStruct ModConfig; // Our global mod configuration structure
@@ -66,7 +64,7 @@ public:
 
 	int NumPlayersInSession; // The number of players currently in the game session
 
-	int MaxPlayers; // Maximum amount of players allowed in the session
+	int MaxPlayers; // Maximum number of players allowed in the session
 
 	bool bAllowDebugLogging; // Whether the player wants to do additional logging for debugging purposes
 
@@ -77,6 +75,9 @@ public:
 
 	UFUNCTION()
 	void UpdateThumbnails(bool& bTutorialException);
+
+	UFUNCTION()
+	void UpdateRichPresence();
 
 protected:
 

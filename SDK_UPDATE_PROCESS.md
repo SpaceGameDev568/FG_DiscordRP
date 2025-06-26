@@ -1,6 +1,6 @@
 NOTE: For the initial launch, the Unreal plugin has a name of DiscordPartnerSDK but this name will be changing to DiscordSocialSDK in a future version. This will probably require a refactor.
 
-SDK Version: 1.2.8656
+SDK Version: 1.3.9273
 
 1. Make a manual backup of the entire mod
 

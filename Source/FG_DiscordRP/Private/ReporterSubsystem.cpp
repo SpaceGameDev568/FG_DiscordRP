@@ -10,9 +10,9 @@
 #include "DRP_ConfigStruct.h"
 #include "ModLoading/ModLoadingLibrary.h"
 #include "Kismet/GameplayStatics.h"
-#include "DiscordActions.h"
+#include "DiscordLocalPlayerSubsystem.h"
 
-#define APPLICATION_ID 1082738646173614143
+#define APPLICATION_ID 1082738646173614143 // This is public
 
 AReporterSubsystem::AReporterSubsystem()
 {
@@ -24,13 +24,12 @@ AReporterSubsystem::AReporterSubsystem()
 	DiscordDetails = "Session Loading...";
 	DiscordState = "Session Loading...";
 	GameLanguage = "Session Loading...";
-	DiscordApplicationID = "1082738646173614143";
-	//DiscordActions = nullptr;
 
 	Activity = nullptr;
 	Assets = nullptr;
-	Party = nullptr;
-	//Button = nullptr;
+	//Party = nullptr;
+	Button = nullptr;
+	Timestamps = nullptr;
 	Discord = nullptr;
 
 	bAllowDebugLogging = ModConfig.bAllowDebugLogging;
@@ -38,11 +37,11 @@ AReporterSubsystem::AReporterSubsystem()
 
 	// Initialize variables from config, unless we are in the editor, as that would crash the engine
 	{
-#if WITH_EDITOR
+	#if WITH_EDITOR
 		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Shipping env not detected, avoiding crash"));
-#else
+	#else
 		ModConfig = FDRP_ConfigStruct::GetActiveConfig(GetWorld());
-#endif
+	#endif
 	}
 }
 
@@ -65,7 +64,6 @@ void AReporterSubsystem::BeginPlay()
 	GameLanguage = UFGBlueprintFunctionLibrary::GetLanguage();
 	UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("%s"), *GameLanguage.Append(" is the language being used."));
 
-
     // Initialize Discord RPC
 	auto PlayerController = Cast<APlayerController>(this->GetWorld()->GetFirstPlayerController());
 	auto LocalPlayer = PlayerController->GetLocalPlayer();
@@ -83,10 +81,17 @@ void AReporterSubsystem::BeginPlay()
 
 	Activity = NewObject<UDiscordActivity>();
 	Assets = NewObject<UDiscordActivityAssets>();
-	Party = NewObject<UDiscordActivityParty>();
+	// Party = NewObject<UDiscordActivityParty>();
+	Button = NewObject<UDiscordActivityButton>();
+	Timestamps = NewObject<UDiscordActivityTimestamps>();
 
 	Activity->Init();
 	Assets->Init();
+	// Party->Init();
+	Button->Init();
+	Timestamps->Init();
+//
+	// Timestamps->Start();
 
 	// const APlayerState* PlayerState = PlayerController->GetPlayerState<APlayerState>();
 
@@ -109,15 +114,6 @@ void AReporterSubsystem::BeginPlay()
 		// Set our session visibility which affects whether we can retrieve the data we want
 		// AdminInterface->SetSessionVisibility(ESessionVisibility::SV_FriendsOnly);
 	// }
-
-	// FActorSpawnParameters SpawnParams;
-	// SpawnParams.Owner = this;
-//
-	// DiscordActions = GetWorld()->SpawnActor<ADiscordActions>(ActorClass, FVector {0, 0, 0}, FRotator {0, 0, 0}, SpawnParams);
-//
-	// DiscordActions->ConnectToDiscordClient();
-//
-	// DiscordActions->InitializeRichPresence();
 
 	GetWorldTimerManager().SetTimer(MemberTimerHandle, this, &AReporterSubsystem::ProcessPresenceString, 5.0f,true, 5.0f);
 }
@@ -161,24 +157,22 @@ void AReporterSubsystem::ProcessPresenceString()
 	OutDetails.Split(TEXT("."), &DiscordState, &OutState, ESearchCase::IgnoreCase, ESearchDir::FromEnd);
 
 	//If we are a client, skip this step
-	//if (this->GetWorld()->GetNetMode() != NM_Client)
-	//{
-		  // Get Player Count
-		  NumPlayersInSession = UGameplayStatics::GetGameMode(GetWorld())->GetNumPlayers();
-	//}
+	if (this->GetWorld()->GetNetMode() != NM_Client)
+	{
+		// Get Player Count
+		NumPlayersInSession = UGameplayStatics::GetGameMode(GetWorld())->GetNumPlayers();
+	}
 
 
 	// This crashes the game
-	//MaxPlayers = 4;
-	//
-	//Party->SetCurrentSize(NumPlayersInSession);
-	//Party->SetMaxSize(MaxPlayers);
-	//Activity->SetParty(Party);
+	// MaxPlayers = 4;
 
-	// PartyMax(MaxPlayers);
+	// Party->SetCurrentSize(NumPlayersInSession);
+	// Party->SetMaxSize(MaxPlayers);
+	// Activity->SetParty(Party);
 
-	// Button->SetLabel("Get Mod");
-	// Button->SetUrl("https://ficsit.app/mod/FG_DiscordRP");
+	Button->SetLabel("Get Mod");
+	Button->SetUrl("https://ficsit.app/mod/FG_DiscordRP");
 
 
 	// Add a catch for if the player is currently in the tutorial phase
@@ -186,7 +180,6 @@ void AReporterSubsystem::ProcessPresenceString()
 	{
 		PlayerPresence.Split(TEXT("."), &DiscordDetails, &DiscordState);
 	}
-
 
 		//TArray<AActor*> OutActors;
 		//TSubclassOf<ADiscordActions> ActorClass;
@@ -367,6 +360,11 @@ void AReporterSubsystem::UpdateThumbnails(bool& bTutorialException)
 		LargeImageText = "Satisfactory";
 	}
 
+	UpdateRichPresence();
+}
+
+void AReporterSubsystem::UpdateRichPresence()
+{
 	// Set Activity info
 	Activity->SetType(EDiscordActivityTypes::Playing);
 	Activity->SetState(DiscordState);
@@ -382,15 +380,16 @@ void AReporterSubsystem::UpdateThumbnails(bool& bTutorialException)
 	// Commit Assets to presence
 	Activity->SetAssets(Assets);
 
+	// Commit Timestamps to presence
+	Activity->SetTimestamps(Timestamps);
+
+	//Activity->SetParty(Party);
+
 	// Add custom buttons
-	// Activity->AddButton(Button);
+	Activity->AddButton(Button);
 
-	// Commit Presence to client
+	// Commit Presence to the client
 	Discord->Client->UpdateRichPresence(Activity, FDiscordClientUpdateRichPresenceCallback::CreateUObject(this, &AReporterSubsystem::OnRichPresenceUpdated));
-
-	// DiscordActions->UpdateRichPresence(DiscordState, DiscordDetails, LargeImage, LargeImageText, SmallImage, SmallImageText);
-
-	// Discord->Client->UpdateRichPresence(Activity, FDiscordClientUpdateRichPresenceCallback::CreateUObject(this, &AReporterSubsystem::OnRichPresenceUpdated));
 }
 
 void AReporterSubsystem::OnRichPresenceUpdated(UDiscordClientResult* Result)
