@@ -28,7 +28,7 @@ AReporterSubsystem::AReporterSubsystem()
 	Activity = nullptr;
 	Assets = nullptr;
 	//Party = nullptr;
-	Button = nullptr;
+	//Button = nullptr;
 	Timestamps = nullptr;
 	Discord = nullptr;
 
@@ -82,16 +82,15 @@ void AReporterSubsystem::BeginPlay()
 	Activity = NewObject<UDiscordActivity>();
 	Assets = NewObject<UDiscordActivityAssets>();
 	// Party = NewObject<UDiscordActivityParty>();
-	Button = NewObject<UDiscordActivityButton>();
+	//Button = NewObject<UDiscordActivityButton>();
 	Timestamps = NewObject<UDiscordActivityTimestamps>();
 
 	Activity->Init();
 	Assets->Init();
 	// Party->Init();
-	Button->Init();
+	//Button->Init();
 	Timestamps->Init();
-//
-	// Timestamps->Start();
+	Timestamps->Start();
 
 	// const APlayerState* PlayerState = PlayerController->GetPlayerState<APlayerState>();
 
@@ -171,8 +170,8 @@ void AReporterSubsystem::ProcessPresenceString()
 	// Party->SetMaxSize(MaxPlayers);
 	// Activity->SetParty(Party);
 
-	Button->SetLabel("Get Mod");
-	Button->SetUrl("https://ficsit.app/mod/FG_DiscordRP");
+	//Button->SetLabel("Get Mod");
+	//Button->SetUrl("https://ficsit.app/mod/FG_DiscordRP");
 
 
 	// Add a catch for if the player is currently in the tutorial phase
@@ -386,7 +385,7 @@ void AReporterSubsystem::UpdateRichPresence()
 	//Activity->SetParty(Party);
 
 	// Add custom buttons
-	Activity->AddButton(Button);
+	//Activity->AddButton(Button);
 
 	// Commit Presence to the client
 	Discord->Client->UpdateRichPresence(Activity, FDiscordClientUpdateRichPresenceCallback::CreateUObject(this, &AReporterSubsystem::OnRichPresenceUpdated));

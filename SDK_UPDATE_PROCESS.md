@@ -1,6 +1,6 @@
 NOTE: For the initial launch, the Unreal plugin has a name of DiscordPartnerSDK but this name will be changing to DiscordSocialSDK in a future version. This will probably require a refactor.
 
-SDK Version: 1.3.9273
+SDK Version: 1.7.12739
 
 1. Make a manual backup of the entire mod
 
@@ -12,7 +12,7 @@ SDK Version: 1.3.9273
 
 5. Regenerate project files
 
-6. Edit line `45` of DiscordParterSDK.cpp to change the plugin base directory to that of the mod:
+6. Edit line `35` of DiscordParterSDK.cpp to change the plugin base directory to that of the mod:
 
 	`FString BaseDir = IPluginManager::Get().FindPlugin("FG_DiscordRP")->GetBaseDir();`
 
