@@ -1,6 +1,8 @@
 // Copyright 2023 - 2025 Jesse Hodgson
 
 #include "ReporterSubsystem.h"
+
+#include "DiscordGameInstanceModule.h"
 #include "FG_DiscordRP.h"
 #include "FGBlueprintFunctionLibrary.h"
 #include "FGPlayerController.h"
@@ -89,8 +91,15 @@ void AReporterSubsystem::BeginPlay()
 	Assets->Init();
 	// Party->Init();
 	//Button->Init();
+
+	//Button->SetLabel("Get Mod");
+	//Button->SetUrl("https://ficsit.app/mod/FG_DiscordRP");
+
 	Timestamps->Init();
-	Timestamps->Start();
+
+	// Get the current UTC time when we load a save, this will be reset if another save is loaded, or the player goes back to the main menu
+	FDateTime Now = FDateTime::UtcNow();
+	Timestamps->SetStart(Now.ToUnixTimestamp());
 
 	// const APlayerState* PlayerState = PlayerController->GetPlayerState<APlayerState>();
 
@@ -170,27 +179,12 @@ void AReporterSubsystem::ProcessPresenceString()
 	// Party->SetMaxSize(MaxPlayers);
 	// Activity->SetParty(Party);
 
-	//Button->SetLabel("Get Mod");
-	//Button->SetUrl("https://ficsit.app/mod/FG_DiscordRP");
-
 
 	// Add a catch for if the player is currently in the tutorial phase
 	if (bTutorialException)
 	{
 		PlayerPresence.Split(TEXT("."), &DiscordDetails, &DiscordState);
 	}
-
-		//TArray<AActor*> OutActors;
-		//TSubclassOf<ADiscordActions> ActorClass;
-		//UGameplayStatics::GetAllActorsOfClass(GetWorld(), ActorClass, OutActors);
-//
-		//for (auto&  Actor: OutActors)
-		//{
-		//	UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Actor found"));
-//
-		//	ADiscordActions* DiscordActions = Cast<ADiscordActions>(Actor);
-		//	DiscordActions->UpdateRichPresence("InGameState", "InGameDetails");
-		//}
 
 	UpdateThumbnails(bTutorialException);
 }
@@ -379,13 +373,13 @@ void AReporterSubsystem::UpdateRichPresence()
 	// Commit Assets to presence
 	Activity->SetAssets(Assets);
 
+	// Add custom buttons
+	//Activity->AddButton(Button);
+
 	// Commit Timestamps to presence
 	Activity->SetTimestamps(Timestamps);
 
 	//Activity->SetParty(Party);
-
-	// Add custom buttons
-	//Activity->AddButton(Button);
 
 	// Commit Presence to the client
 	Discord->Client->UpdateRichPresence(Activity, FDiscordClientUpdateRichPresenceCallback::CreateUObject(this, &AReporterSubsystem::OnRichPresenceUpdated));
