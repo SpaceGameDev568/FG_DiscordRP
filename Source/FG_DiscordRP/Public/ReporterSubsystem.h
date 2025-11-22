@@ -16,6 +16,7 @@ class FG_DISCORDRP_API AReporterSubsystem : public AModSubsystem
 	GENERATED_BODY()
 
 public:
+
 	AReporterSubsystem();
 
 	UPROPERTY()
@@ -53,6 +54,8 @@ public:
 	FString DiscordState; // The player's current state in the game
 
 	FString GameLanguage; // The player's preferred language
+
+	int64 GameStartTime; // The Unix Timestamp for the UTC time the game started
 
 	FPlayerPresenceState PresenceState; // The player's presence state in the game
 

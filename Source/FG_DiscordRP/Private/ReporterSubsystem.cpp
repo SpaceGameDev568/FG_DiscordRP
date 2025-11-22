@@ -2,7 +2,6 @@
 
 #include "ReporterSubsystem.h"
 
-#include "DiscordGameInstanceModule.h"
 #include "FG_DiscordRP.h"
 #include "FGBlueprintFunctionLibrary.h"
 #include "FGPlayerController.h"
@@ -26,6 +25,9 @@ AReporterSubsystem::AReporterSubsystem()
 	DiscordDetails = "Session Loading...";
 	DiscordState = "Session Loading...";
 	GameLanguage = "Session Loading...";
+
+	// Get the current UTC time when we load a save, this will be reset if another save is loaded, or the player goes back to the main menu
+	GameStartTime = FDateTime::UtcNow().ToUnixTimestamp();
 
 	Activity = nullptr;
 	Assets = nullptr;
@@ -96,10 +98,7 @@ void AReporterSubsystem::BeginPlay()
 	//Button->SetUrl("https://ficsit.app/mod/FG_DiscordRP");
 
 	Timestamps->Init();
-
-	// Get the current UTC time when we load a save, this will be reset if another save is loaded, or the player goes back to the main menu
-	FDateTime Now = FDateTime::UtcNow();
-	Timestamps->SetStart(Now.ToUnixTimestamp());
+	Timestamps->SetStart(GameStartTime);
 
 	// const APlayerState* PlayerState = PlayerController->GetPlayerState<APlayerState>();
 
