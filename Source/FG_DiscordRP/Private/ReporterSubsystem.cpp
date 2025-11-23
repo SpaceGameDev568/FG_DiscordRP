@@ -358,6 +358,7 @@ void AReporterSubsystem::UpdateThumbnails(bool& bTutorialException)
 void AReporterSubsystem::UpdateRichPresence()
 {
 	// Set Activity info
+	Activity->SetName("Satisfactory");
 	Activity->SetType(EDiscordActivityTypes::Playing);
 	Activity->SetState(DiscordState);
 	Activity->SetDetails(DiscordDetails);
