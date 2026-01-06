@@ -106,15 +106,6 @@ void AReporterSubsystem::BeginPlay()
 
 	// if (AFGAdminInterface* AdminInterface = PlayerController->GetAdminInterface())
 	// {
-		//UCLASS(notplaceable)
-		//class FACTORYGAME_API AFGAdminInterface : public AInfo
-		//{
-		//	GENERATED_BODY()
-		//
-		//	friend class AReporterSubsystem;
-
-		// IF THIS ERRORS IN NEWER VERSIONS, ADD 'friend class AReporterSubsystem;' TO THE AREA ABOVE ON FGAdminInterface.h
-
 		// Get the amount of players allowed in the game session
 		//MaxPlayers = AdminInterface->GetGameSession()->MaxPlayers;
 
@@ -140,14 +131,6 @@ void AReporterSubsystem::ProcessPresenceString()
 
 	// Thanks to SirDigby for helping me with this
 
-	//UCLASS(BlueprintType)
-	//class FACTORYGAME_API UFGLocalPlayer : public ULocalPlayer
-	//{
-	//	GENERATED_BODY()
-	//
-	//	friend class AReporterSubsystem;
-
-	// IF THIS CREATES ERRORS IN NEWER VERSIONS, ADD 'friend class AReporterSubsystem;' TO THE AREA ABOVE ON FGLocalPlayer.h
 	FPlayerPresenceState PlayerPresenceState;
 	Cast<UFGLocalPlayer>(this->GetWorld()->GetGameInstance()->GetFirstLocalPlayerController()->GetLocalPlayer())->GetPresenceState(PlayerPresenceState);
 	PlayerPresence = PlayerPresenceState.mPresenceString;
