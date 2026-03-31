@@ -6,12 +6,12 @@
 #include "FGBlueprintFunctionLibrary.h"
 #include "FGPlayerController.h"
 #include "FGLocalPlayer.h"
-#include "FGAdminInterface.h"
 #include "GameFramework/GameMode.h"
 #include "DRP_ConfigStruct.h"
 #include "ModLoading/ModLoadingLibrary.h"
 #include "Kismet/GameplayStatics.h"
 #include "DiscordLocalPlayerSubsystem.h"
+#include "StructuredLog.h"
 
 #define APPLICATION_ID 1082738646173614143 // This is public
 
@@ -42,7 +42,7 @@ AReporterSubsystem::AReporterSubsystem()
 	// Initialize variables from config, unless we are in the editor, as that would crash the engine
 	{
 	#if WITH_EDITOR
-		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Shipping env not detected, avoiding crash"));
+		UE_LOGFMT(LogFG_DISCORDRP, Verbose, "Shipping env not detected, avoiding crash");
 	#else
 		ModConfig = FDRP_ConfigStruct::GetActiveConfig(GetWorld());
 	#endif
@@ -54,19 +54,19 @@ void AReporterSubsystem::BeginPlay()
 {
 	Super::BeginPlay();
 
-	UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Loaded FG_DRP Reporter Subsystem."));
+	UE_LOGFMT(LogFG_DISCORDRP, Verbose, "Loaded Discord Rich Presence Reporter Subsystem");
 
 	FModInfo ModInfo;
 	UModLoadingLibrary* ModLoadingLibrary = GetGameInstance()->GetSubsystem<UModLoadingLibrary>();
 	ModLoadingLibrary->GetLoadedModInfo("FG_DiscordRP", ModInfo);
 
 	// Log the name, version, and build date of the mod
-	UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("%s"), *ModInfo.FriendlyName.Append(", " + ModInfo.Version.ToString()));
-	UE_LOG(LogFG_DISCORDRP, Display, TEXT("Build Date: %s %s"), ANSI_TO_TCHAR(__DATE__), ANSI_TO_TCHAR(__TIME__));
+	UE_LOGFMT(LogFG_DISCORDRP, Verbose, "{ModNameAndVersion}", ("ModNameAndVersion", ModInfo.FriendlyName.Append(", " + ModInfo.Version.ToString())));
+	UE_LOGFMT(LogFG_DISCORDRP, Verbose, "Build Date & Time: {BuildDate} {BuildTime}", ("BuildDate", ANSI_TO_TCHAR(__DATE__)), ("BuildTime", ANSI_TO_TCHAR(__TIME__)));
 
 	// Get the language for the interpreter to use later
 	GameLanguage = UFGBlueprintFunctionLibrary::GetLanguage();
-	UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("%s"), *GameLanguage.Append(" is the language being used."));
+	UE_LOGFMT(LogFG_DISCORDRP, Verbose, "Language: {GameLanguage}", ("GameLanguage", GameLanguage));
 
     // Initialize Discord RPC
 	auto PlayerController = Cast<APlayerController>(this->GetWorld()->GetFirstPlayerController());
@@ -78,8 +78,6 @@ void AReporterSubsystem::BeginPlay()
 	StatusChanged.BindUFunction(this, "OnStatusChanged");
 	Discord->Client->AddLogCallback(LogCallback, EDiscordLoggingSeverity::Info);
 	Discord->OnStatusChanged.Add(StatusChanged);
-
-	UE_LOG(LogFG_DISCORDRP, Log, TEXT("Post-Init Status: %hhd"), Discord->Client->GetStatus());
 
 	Discord->Client->SetApplicationId(APPLICATION_ID);
 
@@ -127,15 +125,16 @@ void AReporterSubsystem::EndPlay(const EEndPlayReason::Type EndPlayReason)
 // Get and process the local player presence string
 void AReporterSubsystem::ProcessPresenceString()
 {
-	UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Beginning processing..."));
-
 	// Thanks to SirDigby for helping me with this
 
 	FPlayerPresenceState PlayerPresenceState;
 	Cast<UFGLocalPlayer>(this->GetWorld()->GetGameInstance()->GetFirstLocalPlayerController()->GetLocalPlayer())->GetPresenceState(PlayerPresenceState);
 	PlayerPresence = PlayerPresenceState.mPresenceString;
 
-	UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Current presence string: %s"), *PlayerPresence);
+	if (bAllowDebugLogging)
+	{
+		UE_LOGFMT(LogFG_DISCORDRP, Verbose, "Player Presence String: {PlayerPresence}", ("PlayerPresence", PlayerPresence));
+	}
 
 	FString OutTier;
 	FString OutDetails;
@@ -178,147 +177,110 @@ void AReporterSubsystem::UpdateThumbnails(bool& bTutorialException)
 	SmallImage = "satisfactory_logo";
 	SmallImageText = DiscordTier;
 
-	UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Current tier: %s"), *DiscordTier);
-
 	// Parse Biome String
 
 	// Abyss Cliffs
 	if (DiscordState.Contains("Abyss Cliffs") == 1)
 	{
-		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Current biome: Abyss Cliffs"));
-
 		LargeImage = "abyss_cliffs";
 		LargeImageText = "Abyss Cliffs";
 	} // Blue Crater
 	else if (DiscordState.Contains("Blue Crater") == 1)
 	{
-		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Current biome: Blue Crater"));
-
 		LargeImage = "blue_crater";
 		LargeImageText = "Blue Crater";
 	} // Crater Lakes
 	else if (DiscordState.Contains("Crater Lakes") == 1)
 	{
-		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Current biome: Crater Lakes"));
-
 		LargeImage = "crater_lakes";
 		LargeImageText = "Crater Lakes";
 	} // Dune Desert
 	else if (DiscordState.Contains("Dune Desert") == 1)
 	{
-		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Current biome: Dune Desert"));
-
 		LargeImage = "dune_desert";
 		LargeImageText = "Dune Desert";
 	} // Grass Fields
 	else if (DiscordState.Contains("Grass Fields") == 1)
 	{
-		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Current biome: Grass Fields"));
-
 		LargeImage = "grass_fields";
 		LargeImageText = "Grass Fields";
 	} // Jungle Spires
 	else if (DiscordState.Contains("Jungle Spires") == 1)
 	{
-		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Current biome: Jungle Spires"));
-
 		LargeImage = "jungle_spires";
 		LargeImageText = "Jungle Spires";
 	} // Lake Forest
 	else if (DiscordState.Contains("Lake Forest") == 1)
 	{
-		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Current biome: Lake Forest"));
-
 		LargeImage = "lake_forest";
 		LargeImageText = "Lake Forest";
 	} // Maze Canyon
 	else if (DiscordState.Contains("Maze Canyon") == 1)
 	{
-		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Current biome: Maze Canyon"));
-
 		LargeImage = "maze_canyon";
 		LargeImageText = "Maze Canyon";
 	} // No Man's Land
 	else if (DiscordState.Contains("No Man's Land") == 1)
 	{
-		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Current biome: No Man's Land"));
-
 		LargeImage = "no_mans_land";
 		LargeImageText = "No Man's Land";
 	} // Northern Forest
 	else if (DiscordState.Contains("Northern Forest") == 1)
 	{
-		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Current biome: Northern Forest"));
-
 		LargeImage = "northern_forest";
 		LargeImageText = "Northern Forest";
 	} // Red Bamboo Fields
 	else if (DiscordState.Contains("Red Bamboo Fields") == 1)
 	{
-		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Current biome: Red Bamboo Fields"));
-
 		LargeImage = "red_bamboo_fields";
 		LargeImageText = "Red Bamboo Fields";
 	} // Red Jungle
 	else if (DiscordState.Contains("Red Jungle") == 1)
 	{
-		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Current biome: Red Jungle"));
-
 		LargeImage = "red_jungle";
 		LargeImageText = "Red Jungle";
 	} // Rocky Desert
 	else if (DiscordState.Contains("Rocky Desert") == 1)
 	{
-		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Current biome: Rocky Desert"));
-
 		LargeImage = "rocky_desert";
 		LargeImageText = "Rocky Desert";
 	} // Southern Forest
 	else if (DiscordState.Contains("Southern Forest") == 1)
 	{
-		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Current biome: Southern Forest"));
-
 		LargeImage = "southern_forest";
 		LargeImageText = "Southern Forest";
 	} // Spire Coast
 	else if (DiscordState.Contains("Spire Coast") == 1)
 	{
-		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Current biome: Spire Coast"));
-
 		LargeImage = "spire_coast";
 		LargeImageText = "Spire Coast";
 	} // Swamp
 	else if (DiscordState.Contains("Swamp") == 1)
 	{
-		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Current biome: Swamp"));
-
 		LargeImage = "swamp";
 		LargeImageText = "Swamp";
 	} // Titan Forest
 	else if (DiscordState.Contains("Titan Forest") == 1)
 	{
-		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Current biome: Titan Forest"));
-
 		LargeImage = "titan_forest";
 		LargeImageText = "Titan Forest";
 	} // Western Dune Forest
 	else if (DiscordState.Contains("Western Dune Forest") == 1)
 	{
-		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Current biome: Western Dune Forest"));
-
 		LargeImage = "western_dune_forest";
 		LargeImageText = "Western Dune Forest";
 	} // Desert Canyon
 	else if (DiscordState.Contains("Desert Canyon") == 1)
 	{
-		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Current biome: Desert Canyon"));
-
 		LargeImage = "desert_canyon";
 		LargeImageText = "Desert Canyon";
 	} // somewhere
 	else if (DiscordState.Contains("somewhere") == 1)
 	{
-		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Current biome: somewhere. This means that the game is loading or something went terribly wrong."));
+		if (bAllowDebugLogging)
+		{
+			UE_LOGFMT(LogFG_DISCORDRP, Verbose, "Current biome listed as \"somewhere\". This means that the game is loading or something went terribly wrong");
+		}
 
 		LargeImage = "ssd_logo";
 		LargeImageText = "Error Processing Biome String";
@@ -329,7 +291,7 @@ void AReporterSubsystem::UpdateThumbnails(bool& bTutorialException)
 	}
 	else
 	{
-		UE_LOG(LogFG_DISCORDRP, Verbose, TEXT("Biome String not valid. Showing fallback image..."));
+		UE_LOGFMT(LogFG_DISCORDRP, Verbose, "Biome string not valid. Showing fallback image");
 
 		LargeImage = "satisfactory_logo";
 		LargeImageText = "Satisfactory";
@@ -370,13 +332,16 @@ void AReporterSubsystem::UpdateRichPresence()
 
 void AReporterSubsystem::OnRichPresenceUpdated(UDiscordClientResult* Result)
 {
-	if (Result->Successful()) {
-		UE_LOG(LogFG_DISCORDRP, Log, TEXT("Rich Presence updated successfully!"));
-	} else {
-		UE_LOG(LogFG_DISCORDRP, Error, TEXT("Rich Presence update failed"));
+	if (bAllowDebugLogging)
+	{
+		if (Result->Successful()) {
+			UE_LOGFMT(LogFG_DISCORDRP, Verbose, "Rich Presence updated successfully!");
+		} else {
+			UE_LOGFMT(LogFG_DISCORDRP, Verbose, "Rich Presence update failed!");
+		}
 	}
 }
 
 void AReporterSubsystem::OnLogMessage(FString Message, EDiscordLoggingSeverity Severity) {
-	UE_LOG(LogFG_DISCORDRP, Log, TEXT("[%s] %s"), *UEnum::GetValueAsString(Severity), *Message);
+	UE_LOGFMT(LogFG_DISCORDRP, Verbose, "Message from DiscordSocialSDK: {Severity} {DiscordSocialSDKMessage}", ("Severity", UEnum::GetValueAsString(Severity)), ("DiscordSocialSDKMessage", *Message));
 }
