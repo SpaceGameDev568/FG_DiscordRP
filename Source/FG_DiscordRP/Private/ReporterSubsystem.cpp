@@ -11,7 +11,7 @@
 #include "ModLoading/ModLoadingLibrary.h"
 #include "Kismet/GameplayStatics.h"
 #include "DiscordLocalPlayerSubsystem.h"
-#include "StructuredLog.h"
+#include "Logging/StructuredLog.h"
 
 #define APPLICATION_ID 1082738646173614143 // This is public
 

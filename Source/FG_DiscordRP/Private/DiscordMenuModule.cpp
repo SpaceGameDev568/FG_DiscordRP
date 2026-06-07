@@ -3,7 +3,7 @@
 #include "DiscordMenuModule.h"
 #include "FGBlueprintFunctionLibrary.h"
 #include "FG_DiscordRP.h"
-#include "WorldModuleManager.h"
+#include "Module/WorldModuleManager.h"
 
 UDiscordMenuModule::UDiscordMenuModule()
 {
